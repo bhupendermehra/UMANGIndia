@@ -11,6 +11,7 @@ class State extends Model
 
     protected $fillable = [
         'name', 'name_hi', 'slug', 'is_central',
+        'description', 'short_intro', 'featured_image',
         'meta_title', 'meta_description',
     ];
 

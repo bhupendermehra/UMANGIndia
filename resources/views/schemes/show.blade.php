@@ -5,21 +5,22 @@
 @section('keywords', $scheme->meta_keywords)
 
 @section('schema')
-<script type="application/ld+json">
-{
-    "@@context": "https://schema.org",
-    "@@type": "GovernmentService",
-    "name": "{{ $scheme->title }}",
-    "description": "{{ $scheme->short_description }}",
-    "url": "{{ url()->current() }}",
-    "provider": {
-        "@@type": "GovernmentOrganization",
-        "name": "Government of India"
-    },
-    "areaServed": "IN",
-    "serviceType": "{{ $scheme->category->name }}"
-}
-</script>
+<?php
+$schemaData = [
+    '@context' => 'https://schema.org',
+    '@type' => 'GovernmentService',
+    'name' => $scheme->title,
+    'description' => $scheme->short_description,
+    'url' => url()->current(),
+    'provider' => [
+        '@type' => 'GovernmentOrganization',
+        'name' => 'Government of India',
+    ],
+    'areaServed' => 'IN',
+    'serviceType' => $scheme->category->name,
+];
+?>
+<script type="application/ld+json">{!! json_encode($schemaData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 @endsection
 
 @section('content')
@@ -37,7 +38,7 @@
     <article class="min-w-0">
         <section class="surface-card p-6 md:p-8 mb-6">
             <div class="flex items-center gap-2 mb-3 flex-wrap">
-                <span class="bg-[#eef4fb] text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-full">{{ $scheme->category->name }}</span>
+                <span class="bg-blue-50 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-full">{{ $scheme->category->name }}</span>
                 @if($scheme->state)
                 <span class="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded-full">{{ $scheme->state->name }}</span>
                 @endif
@@ -176,41 +177,125 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mt-6">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
             <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
                 Frequently Asked Questions
             </h2>
-            <div class="space-y-3">
+            
+            <!-- FAQ Schema -->
+            @php
+                $faqItems = [];
+                if ($scheme->eligibility) {
+                    $faqItems[] = [
+                        'question' => 'Who is eligible for ' . $scheme->title . '?',
+                        'answer' => strip_tags($scheme->eligibility),
+                    ];
+                }
+                if ($scheme->benefits) {
+                    $faqItems[] = [
+                        'question' => 'What are the benefits of ' . $scheme->title . '?',
+                        'answer' => strip_tags($scheme->benefits),
+                    ];
+                }
+                if ($scheme->application_process) {
+                    $faqItems[] = [
+                        'question' => 'How to apply for ' . $scheme->title . '?',
+                        'answer' => strip_tags($scheme->application_process),
+                    ];
+                }
+            @endphp
+            @if(count($faqItems) > 0)
+            @php
+                $faqSchema = [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'FAQPage',
+                    'mainEntity' => array_map(function ($faq) {
+                        return [
+                            '@type' => 'Question',
+                            'name' => $faq['question'],
+                            'acceptedAnswer' => [
+                                '@type' => 'Answer',
+                                'text' => $faq['answer'],
+                            ],
+                        ];
+                    }, $faqItems),
+                ];
+            @endphp
+            <script type="application/ld+json">{!! json_encode($faqSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+            @endif
+            
+            <div class="space-y-3" x-data="{open: null}">
+                @if($scheme->eligibility)
                 <div class="border border-slate-200 rounded-lg overflow-hidden">
-                    <button onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('svg').classList.toggle('rotate-180')" class="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50 transition">
-                        <span class="font-medium text-slate-900">Who is eligible for this scheme?</span>
-                        <svg class="w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50 transition">
+                        <span class="font-medium text-slate-900">पात्रता / Eligibility</span>
+                        <svg class="w-5 h-5 text-slate-400 transition-transform faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
                     </button>
-                    <div class="hidden p-4 pt-0 text-slate-600 text-sm leading-relaxed">
+                    <div class="hidden p-4 pt-0 text-slate-600 text-sm leading-relaxed faq-content">
                         {!! nl2br(e($scheme->eligibility)) !!}
                     </div>
                 </div>
+                @endif
+                
+                @if($scheme->benefits)
                 <div class="border border-slate-200 rounded-lg overflow-hidden">
-                    <button onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('svg').classList.toggle('rotate-180')" class="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50 transition">
-                        <span class="font-medium text-slate-900">What are the benefits?</span>
-                        <svg class="w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50 transition">
+                        <span class="font-medium text-slate-900">लाभ / Benefits</span>
+                        <svg class="w-5 h-5 text-slate-400 transition-transform faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
                     </button>
-                    <div class="hidden p-4 pt-0 text-slate-600 text-sm leading-relaxed">
+                    <div class="hidden p-4 pt-0 text-slate-600 text-sm leading-relaxed faq-content">
                         {!! nl2br(e($scheme->benefits)) !!}
                     </div>
                 </div>
+                @endif
+                
+                @if($scheme->application_process)
                 <div class="border border-slate-200 rounded-lg overflow-hidden">
-                    <button onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('svg').classList.toggle('rotate-180')" class="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50 transition">
-                        <span class="font-medium text-slate-900">How to apply?</span>
-                        <svg class="w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50 transition">
+                        <span class="font-medium text-slate-900">आवेदन प्रक्रिया / How to Apply</span>
+                        <svg class="w-5 h-5 text-slate-400 transition-transform faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
                     </button>
-                    <div class="hidden p-4 pt-0 text-slate-600 text-sm leading-relaxed">
+                    <div class="hidden p-4 pt-0 text-slate-600 text-sm leading-relaxed faq-content">
                         {!! nl2br(e($scheme->application_process)) !!}
                     </div>
                 </div>
+                @endif
+                
+                @if($scheme->required_documents)
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50 transition">
+                        <span class="font-medium text-slate-900">आवश्यक दस्तावेज / Required Documents</span>
+                        <svg class="w-5 h-5 text-slate-400 transition-transform faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="hidden p-4 pt-0 text-slate-600 text-sm leading-relaxed faq-content">
+                        {!! nl2br(e($scheme->required_documents)) !!}
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
+        
+        @push('scripts')
+        <script>
+        function toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('.faq-icon');
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+        </script>
+        @endpush
 
         <section class="surface-card p-6 md:p-8">
             <h3 class="font-semibold mb-3 text-slate-800">📬 Get Updates</h3>

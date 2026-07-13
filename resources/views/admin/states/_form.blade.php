@@ -31,6 +31,33 @@ $state = $state ?? null;
         </div>
     </div>
 
+    <div class="grid grid-cols-1 gap-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Short Intro</label>
+            <textarea name="short_intro" rows="2"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                placeholder="1-2 sentence summary shown under the state name">{{ old('short_intro', $state->short_intro ?? '') }}</textarea>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea name="description" rows="8"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-mono"
+                placeholder="Full HTML editorial overview of schemes in this state">{{ old('description', $state->description ?? '') }}</textarea>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Featured Image</label>
+            <input type="text" name="featured_image" value="{{ old('featured_image', $state->featured_image ?? '') }}"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                placeholder="https://... banner image URL">
+        </div>
+    </div>
+
     <div class="grid grid-cols-2 gap-4">
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>

@@ -4,12 +4,18 @@
 @section('description', 'Browse all Indian government schemes. Filter by category, state, and status. Find eligibility, benefits and application process.')
 
 @section('content')
+<div class="lg:hidden mb-4">
+    <button onclick="document.getElementById('filter-panel').classList.toggle('hidden'); this.querySelector('span').textContent = document.getElementById('filter-panel').classList.contains('hidden') ? 'Show Filters' : 'Hide Filters'" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium flex items-center justify-between shadow-sm">
+        <span>Show Filters</span>
+        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+    </button>
+</div>
 <div class="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
-    <aside class="lg:sticky lg:top-24 self-start">
+    <aside id="filter-panel" class="hidden lg:block lg:sticky lg:top-24 self-start">
         <div class="surface-card p-5">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="font-bold section-title">Filters</h3>
-                <a href="{{ route('schemes.index') }}" class="text-xs text-[#0B4EA2] hover:underline">Clear all</a>
+                <a href="{{ route('schemes.index') }}" class="text-xs text-blue-600 hover:underline">Clear all</a>
             </div>
 
             <div class="space-y-4">
@@ -117,7 +123,7 @@
             {{ $schemes->links() }}
         </div>
         @else
-        <div class="surface-card p-12 text-center">
+        <div class="surface-card p-8 md:p-12 text-center">
             <p class="text-slate-500 text-lg">No schemes found matching your criteria.</p>
             <a href="{{ route('schemes.index') }}" class="mt-4 inline-block text-blue-600 hover:underline">View all schemes →</a>
         </div>

@@ -27,8 +27,11 @@
     <!-- Top Bar -->
     <header class="bg-primary-600 text-white h-16 flex items-center justify-between px-6 shadow-lg sticky top-0 z-50">
         <div class="flex items-center gap-3">
+            <button onclick="toggleAdminSidebar()" class="md:hidden p-2 -ml-2 text-white/80 hover:text-white" aria-label="Toggle sidebar">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
-                <img src="{{ asset('images/icon.png') }}" alt="UmangIndia" class="h-8 w-8 rounded">
+                <img src="{{ asset('images/icon.png') }}" alt="UmangIndia" loading="lazy" class="h-8 w-8 rounded">
                 <span class="font-bold text-lg">UmangIndia <span class="text-xs bg-white/20 px-2 py-0.5 rounded">Admin</span></span>
             </a>
         </div>
@@ -48,8 +51,11 @@
     </header>
 
     <div class="flex">
+        <!-- Mobile sidebar backdrop -->
+        <div id="adminSidebarBackdrop" onclick="toggleAdminSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+
         <!-- Sidebar -->
-        <aside class="admin-sidebar w-64 bg-white shadow-sm border-r border-gray-200 flex-shrink-0 sticky top-16 h-[calc(100vh-64px)] overflow-y-auto">
+        <aside id="adminSidebar" class="admin-sidebar flex w-64 bg-white shadow-sm border-r border-gray-200 flex-shrink-0 sticky top-16 h-[calc(100vh-64px)] overflow-y-auto fixed inset-y-0 left-0 z-50 transform -translate-x-full transition-transform md:translate-x-0 md:static">
             <nav class="p-4 space-y-1">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('admin.dashboard') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:bg-gray-100' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -79,7 +85,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 p-6">
+        <main class="flex-1 min-w-0 overflow-x-hidden p-6">
             @if(session('success'))
             <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
@@ -102,5 +108,12 @@
     </div>
 
     @stack('scripts')
+
+    <script>
+        function toggleAdminSidebar() {
+            document.getElementById('adminSidebar').classList.toggle('-translate-x-full');
+            document.getElementById('adminSidebarBackdrop').classList.toggle('hidden');
+        }
+    </script>
 </body>
 </html>

@@ -6,7 +6,7 @@
 <div class="max-w-3xl mx-auto">
     <nav class="text-sm mb-6">
         <ol class="flex items-center gap-2 text-slate-500 flex-wrap">
-            <li><a href="{{ route('home') }}" class="hover:text-[#0B4EA2] transition">Home</a></li>
+            <li><a href="{{ route('home') }}" class="hover:text-blue-600 transition">Home</a></li>
             <li>›</li>
             <li class="text-slate-800 font-medium">About Us</li>
         </ol>
@@ -33,7 +33,7 @@
             </ul>
 
             <div class="mt-6 p-4 rounded-2xl border border-amber-200 bg-amber-50">
-                <p class="text-sm text-slate-600"><strong class="text-[#F58220]">Note:</strong> This is not an official government website. For official information, please visit <a href="https://www.india.gov.in" class="text-[#0B4EA2] hover:underline" target="_blank" rel="noopener">india.gov.in</a></p>
+                <p class="text-sm text-slate-600"><strong class="text-amber-500">Note:</strong> This is not an official government website. For official information, please visit <a href="https://www.india.gov.in" class="text-blue-600 hover:underline" target="_blank" rel="noopener">india.gov.in</a></p>
             </div>
         </div>
     </section>

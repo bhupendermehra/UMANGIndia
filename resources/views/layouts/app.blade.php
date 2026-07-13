@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'UmangIndia - Government Schemes & Sarkari Yojana')</title>
+    <title>@yield('title', 'UmangIndia - Government Schemes & Sarkari Yojana Portal')</title>
     <meta name="description" content="@yield('description', 'Complete information about Indian government schemes, sarkari yojana, eligibility, benefits and application process.')">
     <meta name="keywords" content="@yield('keywords', 'sarkari yojana, government schemes, pm kisan, ayushman bharat, mgnrega')">
 
@@ -18,6 +18,25 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ asset('images/logo.png') }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', 'UmangIndia - Government Schemes Portal')">
+    <meta name="twitter:description" content="@yield('description', 'Complete information about Indian government schemes & yojana')">
+    <meta name="twitter:image" content="{{ asset('images/og-image.png') }}">
+
+    <!-- Hreflang Tags -->
+    <link rel="alternate" href="{{ url()->current() }}" hreflang="hi">
+    <link rel="alternate" href="{{ url()->current() }}" hreflang="en">
+    <link rel="alternate" href="{{ url()->current() }}" hreflang="x-default">
+
+    @if($gsc = \App\Models\Setting::get('google_search_console'))
+    <meta name="google-site-verification" content="{{ $gsc }}">
+    @endif
+    @if($ga4 = \App\Models\Setting::get('google_analytics_id'))
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $ga4 }}"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ $ga4 }}');</script>
+    @endif
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
@@ -87,22 +106,29 @@
         .tab-content { animation: fadeIn 0.2s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         #mobile-menu { transition: max-height 0.3s ease, opacity 0.2s ease; overflow: hidden; }
+        .footer-gradient { background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); }
     </style>
 
     <!-- Schema.org -->
     @yield('schema')
+    @stack('schema')
 
     @stack('styles')
 </head>
 <body class="app-shell text-slate-800 antialiased" style="font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;">
+    @php $announcement = \App\Models\Setting::get('announcement_text'); @endphp
+    @if($announcement)
     <!-- Announcement Bar -->
-    <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm">
-        <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 px-4 py-2">
+    <div id="announcement-bar" class="bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2.5 px-4 relative text-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-center gap-3">
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
-            <span>New: Latest PM Kisan & Ayushman Bharat Updates Available</span>
-            <a href="{{ route('schemes.latest') }}" class="underline font-medium hover:no-underline whitespace-nowrap">Check Now →</a>
+            <span>{{ $announcement }}</span>
+            <button onclick="document.getElementById('announcement-bar').remove()" class="hover:bg-white/20 rounded p-2 ml-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
         </div>
     </div>
+    @endif
 
     <!-- Tricolor Top Bar -->
     <div class="tricolor-top"></div>
@@ -113,57 +139,71 @@
             <div class="flex items-center justify-between h-16 gap-4">
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
-                    <img src="{{ asset('images/logo.png') }}" alt="UmangIndia Logo" class="h-10 w-auto">
+                    <img src="{{ asset('images/logo.png') }}" alt="UmangIndia Logo" class="h-10 w-auto" width="120" height="40">
                     <div class="hidden sm:block">
-                        <span class="text-lg font-bold" style="color: #2563eb;">UMANG</span><span class="text-lg font-bold" style="color: #F58220;">India</span>
-                        <p class="text-[10px] text-[#64748b] -mt-1 tracking-wide">Government Schemes Portal</p>
+                        <span class="text-lg font-bold text-blue-600">UMANG</span><span class="text-lg font-bold text-amber-500">India</span>
+                        <p class="text-xs text-slate-500 -mt-1 tracking-wide">Government Schemes Portal</p>
                     </div>
                 </a>
 
                 <!-- Desktop Nav -->
                 <nav class="hidden md:flex items-center space-x-1">
-                    <a href="{{ route('home') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-[#eef4fb] hover:text-[#2563eb] transition">Home</a>
-                    <a href="{{ route('schemes.index') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-[#eef4fb] hover:text-[#2563eb] transition">All Yojana</a>
+                    <a href="{{ route('home') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Home</a>
+                    <a href="{{ route('schemes.index') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">All Yojana</a>
                     <div class="relative group">
-                        <button class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-[#eef4fb] hover:text-[#2563eb] flex items-center transition">
+                        <button class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 flex items-center transition">
                             Categories
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
                         <div class="absolute left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border py-2 hidden group-hover:block z-50">
                             @foreach(\App\Models\Category::orderBy('sort_order')->get() as $cat)
-                            <a href="{{ route('categories.show', $cat) }}" class="block px-4 py-2.5 text-sm hover:bg-[#eef4fb] hover:text-[#2563eb] transition">{{ $cat->icon }} {{ $cat->name }}</a>
+                            <a href="{{ route('categories.show', $cat) }}" class="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 transition">
+                                <span class="w-5 h-5 rounded bg-blue-50 flex items-center justify-center">{!! \App\Helpers\IconHelper::categorySvg($cat->slug, 'w-3 h-3 text-blue-600') !!}</span>
+                                {{ $cat->name }}
+                            </a>
                             @endforeach
                         </div>
                     </div>
                     <div class="relative group">
-                        <button class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-[#eef4fb] hover:text-[#2563eb] flex items-center transition">
+                        <button class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 flex items-center transition">
                             States
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
                         <div class="absolute left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border py-2 hidden group-hover:block z-50 max-h-72 overflow-y-auto">
                             @foreach(\App\Models\State::orderBy('is_central', 'desc')->orderBy('name')->get() as $st)
-                            <a href="{{ route('states.show', $st) }}" class="block px-4 py-2.5 text-sm hover:bg-[#eef4fb] hover:text-[#2563eb] transition">{{ $st->name }}</a>
+                            <a href="{{ route('states.show', $st) }}" class="block px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 transition">{{ $st->name }}</a>
                             @endforeach
                         </div>
                     </div>
-                    <a href="{{ route('schemes.latest') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-[#eef4fb] hover:text-[#2563eb] transition">Latest</a>
+                    <a href="{{ route('schemes.latest') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Latest</a>
+                    <a href="{{ route('calendar.index') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Calendar</a>
+                    <a href="{{ route('pdfs.index') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">
+                        <svg class="w-3.5 h-3.5 inline -mt-0.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Downloads
+                    </a>
+                    <a href="{{ route('eligibility.index') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition inline-flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        Check Eligibility
+                    </a>
                 </nav>
 
                 <!-- Search + Language + Mobile Menu -->
                 <div class="flex items-center space-x-2">
                     <!-- Language Switcher -->
-                    <div class="flex items-center border border-[#E5E7EB] rounded-lg overflow-hidden text-sm">
-                        <a href="{{ route('language.switch', 'en') }}" class="px-2.5 py-1.5 font-medium transition {{ app()->getLocale() === 'en' ? 'bg-[#2563eb] text-white' : 'text-[#475569] hover:bg-[#eef4fb]' }}" title="English">EN</a>
-                        <a href="{{ route('language.switch', 'hi') }}" class="px-2.5 py-1.5 font-medium transition {{ app()->getLocale() === 'hi' ? 'bg-[#2563eb] text-white' : 'text-[#475569] hover:bg-[#eef4fb]' }}" title="हिंदी">हि</a>
+                    <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden text-sm">
+                        <a href="{{ route('language.switch', 'en') }}" class="px-3 py-2 font-medium transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-blue-50' }}" title="English">EN</a>
+                        <a href="{{ route('language.switch', 'hi') }}" class="px-3 py-2 font-medium transition {{ app()->getLocale() === 'hi' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-blue-50' }}" title="हिंदी">हि</a>
                     </div>
                     <form action="{{ route('search') }}" method="GET" class="hidden sm:block">
                         <div class="relative">
-                            <input type="text" name="q" value="{{ request('q') }}" placeholder="Search schemes..." class="w-48 lg:w-64 pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#2563eb] focus:border-[#2563eb] bg-slate-50 focus-ring">
-                            <svg class="absolute left-3 top-2.5 h-4 w-4 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            <input type="text" name="q" value="{{ request('q') }}" placeholder="Search schemes..." class="w-48 lg:w-64 pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 bg-slate-50 focus-ring">
+                            <svg class="absolute left-3 top-2.5 h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </div>
                     </form>
                     <!-- Mobile menu button -->
-                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-[#eef4fb]">
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-blue-50">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                     </button>
                 </div>
@@ -176,13 +216,24 @@
                 <form action="{{ route('search') }}" method="GET" class="mb-3">
                     <input type="text" name="q" value="{{ request('q') }}" placeholder="Search schemes..." class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus-ring">
                 </form>
-                <a href="{{ route('home') }}" class="block py-2.5 text-sm font-medium hover:text-[#2563eb]">Home</a>
-                <a href="{{ route('schemes.index') }}" class="block py-2.5 text-sm font-medium hover:text-[#2563eb]">All Yojana</a>
-                <a href="{{ route('schemes.latest') }}" class="block py-2.5 text-sm font-medium hover:text-[#2563eb]">Latest</a>
+                <a href="{{ route('home') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Home</a>
+                <a href="{{ route('schemes.index') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">All Yojana</a>
+                <a href="{{ route('schemes.latest') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Latest</a>
+                <a href="{{ route('calendar.index') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Calendar</a>
+                <a href="{{ route('pdfs.index') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">
+                    <svg class="w-3.5 h-3.5 inline -mt-0.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Downloads
+                </a>
+                <a href="{{ route('eligibility.index') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Check Eligibility</a>
                 <div class="border-t border-slate-200 mt-2 pt-2">
-                    <p class="text-xs font-semibold text-[#64748b] uppercase mb-1 tracking-wider">Categories</p>
+                    <p class="text-xs font-semibold text-slate-500 uppercase mb-1 tracking-wider">Categories</p>
                     @foreach(\App\Models\Category::orderBy('sort_order')->get() as $cat)
-                    <a href="{{ route('categories.show', $cat) }}" class="block py-1.5 text-sm hover:text-[#2563eb]">{{ $cat->icon }} {{ $cat->name }}</a>
+                    <a href="{{ route('categories.show', $cat) }}" class="flex items-center gap-2 py-2.5 text-sm hover:text-blue-600">
+                        <span class="w-5 h-5 rounded bg-blue-50 flex items-center justify-center">{!! \App\Helpers\IconHelper::categorySvg($cat->slug, 'w-3 h-3 text-blue-600') !!}</span>
+                        {{ $cat->name }}
+                    </a>
                     @endforeach
                 </div>
             </div>
@@ -209,7 +260,7 @@
                 <!-- About -->
                 <div>
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="{{ asset('images/icon.png') }}" alt="UmangIndia" class="h-10 w-10 rounded-lg">
+                        <img src="{{ asset('images/icon.png') }}" alt="UmangIndia" loading="lazy" class="h-10 w-10 rounded-lg">
                         <div>
                             <span class="text-white font-bold text-lg">UMANG</span><span class="text-saffron-400 font-bold text-lg">India</span>
                         </div>
@@ -223,6 +274,7 @@
                         <li><a href="{{ route('home') }}" class="hover:text-white transition">Home</a></li>
                         <li><a href="{{ route('schemes.index') }}" class="hover:text-white transition">All Schemes</a></li>
                         <li><a href="{{ route('schemes.latest') }}" class="hover:text-white transition">Latest Updates</a></li>
+                        <li><a href="{{ route('pdfs.index') }}" class="hover:text-white transition">Downloads</a></li>
                         <li><a href="{{ route('search') }}" class="hover:text-white transition">Search</a></li>
                     </ul>
                 </div>
@@ -243,6 +295,7 @@
                         <li><a href="{{ route('pages.contact') }}" class="hover:text-white transition">Contact</a></li>
                         <li><a href="{{ route('pages.privacy') }}" class="hover:text-white transition">Privacy Policy</a></li>
                         <li><a href="{{ route('pages.disclaimer') }}" class="hover:text-white transition">Disclaimer</a></li>
+                        <li><a href="{{ route('pages.terms') }}" class="hover:text-white transition">Terms & Conditions</a></li>
                     </ul>
                 </div>
             </div>

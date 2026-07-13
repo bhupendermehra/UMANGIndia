@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             HindiTranslationSeeder::class,
             ExpandedSchemeSeeder::class,
+            StateSchemesMaharashtraSeeder::class,
+            StateSchemesUttarPradeshSeeder::class,
+            StateSchemesBiharSeeder::class,
+            StateSchemesWestBengalSeeder::class,
+            StateSchemesMadhyaPradeshSeeder::class,
         ]);
 
         // Ensure admin user exists

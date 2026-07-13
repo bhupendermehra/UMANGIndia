@@ -4,19 +4,20 @@
 @section('description', 'Complete information about Indian government schemes. Check eligibility, benefits and application process for PM Kisan, Ayushman Bharat, MGNREGA and 500+ schemes.')
 
 @section('schema')
-<script type="application/ld+json">
-{
-    "@@context": "https://schema.org",
-    "@@type": "WebSite",
-    "name": "UmangIndia",
-    "url": "{{ url('/') }}",
-    "potentialAction": {
-        "@@type": "SearchAction",
-        "target": "{{ url('/search') }}?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-    }
-}
-</script>
+<?php
+$siteSchema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'WebSite',
+    'name' => 'UmangIndia',
+    'url' => url('/'),
+    'potentialAction' => [
+        '@type' => 'SearchAction',
+        'target' => url('/search') . '?q={search_term_string}',
+        'query-input' => 'required name=search_term_string',
+    ],
+];
+?>
+<script type="application/ld+json">{!! json_encode($siteSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 @endsection
 
 @section('content')
@@ -28,13 +29,13 @@
             <circle cx="200" cy="200" r="100" fill="none" stroke="white" stroke-width="0.2"/>
         </svg>
     </div>
-    <div class="relative z-10 px-8 py-16 md:px-16 md:py-20">
+    <div class="relative z-10 px-6 py-12 sm:px-8 sm:py-16 md:px-16 md:py-20">
         <div class="max-w-3xl">
             <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
                 <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
                 <span class="text-sm text-blue-100">{{ $totalSchemes }}+ Schemes Updated</span>
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+            <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
                 Find the Right<br>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Government Scheme</span><br>
                 for You
@@ -42,12 +43,12 @@
             <p class="text-lg text-blue-100/80 mb-8 max-w-xl">
                 Check eligibility, benefits, and application process for PM Kisan, Ayushman Bharat, MGNREGA and {{ $totalSchemes }}+ schemes.
             </p>
-            <form action="{{ route('search') }}" method="GET" class="flex gap-3 max-w-xl">
+            <form action="{{ route('search') }}" method="GET" class="flex flex-col sm:flex-row gap-3 max-w-xl">
                 <div class="flex-1 relative">
                     <input type="text" name="q" placeholder="Search schemes..." class="w-full px-5 py-4 rounded-xl bg-white text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-amber-400 shadow-xl">
                     <svg class="absolute right-4 top-4 h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </div>
-                <button type="submit" class="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold rounded-xl shadow-xl transition-all duration-200 hover:scale-105">
+                <button type="submit" class="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold rounded-xl shadow-xl transition-all duration-200 hover:scale-105 sm:w-auto">
                     Search
                 </button>
             </form>
@@ -141,6 +142,7 @@
     <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
         @foreach($featuredSchemes as $scheme)
         <a href="{{ route('schemes.show', $scheme) }}" class="surface-card card-hover overflow-hidden group focus-ring">
+            <div class="h-1 bg-gradient-to-r from-blue-600 to-blue-400"></div>
             <div class="p-5">
                 <div class="flex items-center gap-2 mb-3 flex-wrap">
                     <span class="bg-blue-50 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-full">{{ $scheme->category->name }}</span>
@@ -172,6 +174,7 @@
     <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
         @foreach($latestSchemes as $scheme)
         <a href="{{ route('schemes.show', $scheme) }}" class="surface-card card-hover overflow-hidden group focus-ring">
+            <div class="h-1 bg-gradient-to-r from-blue-600 to-blue-400"></div>
             <div class="p-5">
                 <div class="flex items-center gap-2 mb-3 flex-wrap">
                     <span class="bg-blue-50 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-full">{{ $scheme->category->name }}</span>
@@ -206,18 +209,56 @@
     <x-newsletter-signup />
 </section>
 
-<section class="bg-white rounded-xl p-8 shadow-sm border border-slate-200 mt-10">
+<section class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-slate-200 mt-10" id="trust-section">
     <div class="text-center mb-8">
         <h2 class="text-2xl font-bold text-slate-900">Trusted by Millions</h2>
         <p class="text-slate-500 mt-2">Helping Indians access government welfare since 2024</p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div><div class="text-3xl font-bold text-blue-600">200+</div><div class="text-sm text-slate-500 mt-1">Schemes Listed</div></div>
-        <div><div class="text-3xl font-bold text-blue-600">37</div><div class="text-sm text-slate-500 mt-1">States Covered</div></div>
-        <div><div class="text-3xl font-bold text-blue-600">10L+</div><div class="text-sm text-slate-500 mt-1">Users Helped</div></div>
-        <div><div class="text-3xl font-bold text-blue-600">4.8★</div><div class="text-sm text-slate-500 mt-1">User Rating</div></div>
+        <div><div class="text-3xl font-bold text-blue-600" data-count="200" data-suffix="+">0</div><div class="text-sm text-slate-500 mt-1">Schemes Listed</div></div>
+        <div><div class="text-3xl font-bold text-blue-600" data-count="37" data-suffix="">0</div><div class="text-sm text-slate-500 mt-1">States Covered</div></div>
+        <div><div class="text-3xl font-bold text-blue-600" data-count="10" data-suffix="L+">0</div><div class="text-sm text-slate-500 mt-1">Users Helped</div></div>
+        <div><div class="text-3xl font-bold text-blue-600" data-count="4.8" data-suffix="★" data-decimal="true">0</div><div class="text-sm text-slate-500 mt-1">User Rating</div></div>
     </div>
 </section>
+
+@push('scripts')
+<script>
+(function() {
+    const section = document.getElementById('trust-section');
+    if (!section) return;
+    const counters = section.querySelectorAll('[data-count]');
+    let animated = false;
+    
+    function animateCounters() {
+        if (animated) return;
+        animated = true;
+        counters.forEach(el => {
+            const target = parseFloat(el.dataset.count);
+            const suffix = el.dataset.suffix || '';
+            const isDecimal = el.dataset.decimal === 'true';
+            const duration = 1500;
+            const start = performance.now();
+            
+            function update(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = eased * target;
+                el.textContent = (isDecimal ? current.toFixed(1) : Math.floor(current)) + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        });
+    }
+    
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => { if (entry.isIntersecting) animateCounters(); });
+    }, { threshold: 0.3 });
+    observer.observe(section);
+})();
+</script>
+@endpush
 
 <section class="surface-card p-6 md:p-8">
     <div class="max-w-4xl mx-auto text-center">

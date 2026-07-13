@@ -9,7 +9,11 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\ShareController;
+use App\Http\Controllers\CompareController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\EligibilityController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SchemeController as AdminSchemeController;
@@ -42,6 +46,7 @@ Route::get('/about', [PageController::class, 'about'])->name('pages.about');
 Route::get('/contact', [PageController::class, 'contact'])->name('pages.contact');
 Route::get('/privacy-policy', [PageController::class, 'privacy'])->name('pages.privacy');
 Route::get('/disclaimer', [PageController::class, 'disclaimer'])->name('pages.disclaimer');
+Route::get('/terms-and-conditions', [PageController::class, 'terms'])->name('pages.terms');
 
 // SEO routes
 Route::get('/sitemap.xml', [SitemapController::class, 'xml'])->name('sitemap');
@@ -53,6 +58,21 @@ Route::get('/article/{article}', [ArticleController::class, 'show'])->name('arti
 
 // Share tracking
 Route::post('/share/track', [ShareController::class, 'track'])->name('share.track');
+
+// Comparison Tool
+Route::get('/compare', [CompareController::class, 'index'])->name('compare.index');
+Route::post('/compare', [CompareController::class, 'compare'])->name('compare.result');
+
+// Eligibility Checker
+Route::get('/check-eligibility', [EligibilityController::class, 'index'])->name('eligibility.index');
+Route::post('/check-eligibility/step2', [EligibilityController::class, 'step2'])->name('eligibility.step2');
+Route::post('/check-eligibility/result', [EligibilityController::class, 'result'])->name('eligibility.result');
+
+// Deadline Calendar
+Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+
+// PDF Downloads
+Route::get('/downloads', [PdfController::class, 'index'])->name('pdfs.index');
 
 // Newsletter
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');

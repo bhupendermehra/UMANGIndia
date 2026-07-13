@@ -23,4 +23,9 @@ class PageController extends Controller
     {
         return view('pages.disclaimer');
     }
+
+    public function terms()
+    {
+        return view('pages.terms');
+    }
 }

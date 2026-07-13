@@ -22,7 +22,7 @@
     <div class="w-full max-w-md">
         <div class="bg-white rounded-2xl shadow-xl p-8">
             <div class="text-center mb-8">
-                <img src="{{ asset('images/logo.png') }}" alt="UmangIndia" class="h-12 mx-auto mb-4">
+                <img src="{{ asset('images/logo.png') }}" alt="UmangIndia" loading="lazy" class="h-12 mx-auto mb-4">
                 <h1 class="text-2xl font-bold text-primary-600">Admin Panel</h1>
                 <p class="text-gray-500 text-sm mt-1">Sign in to manage UmangIndia</p>
             </div>

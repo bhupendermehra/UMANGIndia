@@ -16,6 +16,7 @@ class SettingSeeder extends Seeder
             ['key' => 'site_description', 'value' => 'Complete information about Indian government schemes, sarkari yojana, eligibility, benefits and application process. Your trusted source for all central and state government welfare schemes.', 'group' => 'general'],
             ['key' => 'site_email', 'value' => 'contact@umangindia.com', 'group' => 'general'],
             ['key' => 'site_phone', 'value' => '', 'group' => 'general'],
+            ['key' => 'announcement_text', 'value' => 'Check out the latest PM Kisan & Ayushman Bharat updates!', 'group' => 'general'],
 
             // SEO
             ['key' => 'meta_title', 'value' => 'UmangIndia - Government Schemes & Sarkari Yojana | Complete Guide', 'group' => 'seo'],

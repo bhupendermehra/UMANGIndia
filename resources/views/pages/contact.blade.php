@@ -6,7 +6,7 @@
 <div class="max-w-3xl mx-auto">
     <nav class="text-sm mb-6">
         <ol class="flex items-center gap-2 text-slate-500 flex-wrap">
-            <li><a href="{{ route('home') }}" class="hover:text-[#0B4EA2] transition">Home</a></li>
+            <li><a href="{{ route('home') }}" class="hover:text-blue-600 transition">Home</a></li>
             <li>›</li>
             <li class="text-slate-800 font-medium">Contact Us</li>
         </ol>
@@ -20,20 +20,20 @@
 
             <div class="grid md:grid-cols-2 gap-6 mt-6">
                 <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200">
-                    <h3 class="font-semibold text-[#0B4EA2] mb-2">Email</h3>
+                    <h3 class="font-semibold text-blue-600 mb-2">Email</h3>
                     <p class="text-slate-800">contact@umangindia.com</p>
                     <p class="text-xs muted mt-1">We aim to respond within 48 hours</p>
                 </div>
 
                 <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200">
-                    <h3 class="font-semibold text-[#0B4EA2] mb-2">Website</h3>
+                    <h3 class="font-semibold text-blue-600 mb-2">Website</h3>
                     <p class="text-slate-800">www.umangindia.com</p>
                     <p class="text-xs muted mt-1">Available 24/7 online</p>
                 </div>
             </div>
 
-            <div class="mt-6 p-4 rounded-2xl border border-slate-200 bg-[#eef4fb]">
-                <p class="text-sm text-[#083B7A]"><strong>For Official Government Information:</strong> Please visit <a href="https://www.india.gov.in" class="text-[#0B4EA2] hover:underline" target="_blank" rel="noopener">india.gov.in</a> or contact the respective government department directly.</p>
+            <div class="mt-6 p-4 rounded-2xl border border-slate-200 bg-blue-50">
+                <p class="text-sm text-blue-800"><strong>For Official Government Information:</strong> Please visit <a href="https://www.india.gov.in" class="text-blue-600 hover:underline" target="_blank" rel="noopener">india.gov.in</a> or contact the respective government department directly.</p>
             </div>
         </div>
     </section>

@@ -25,6 +25,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
@@ -98,4 +99,21 @@ body {
 .content-prose li {
     color: var(--ui-text);
     line-height: 1.75;
+}
+
+.content-prose img,
+.prose img {
+    max-width: 100%;
+    height: auto;
+}
+
+.content-prose table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.content-prose pre {
+    overflow-x: auto;
+    max-width: 100%;
 }
