@@ -47,14 +47,14 @@
     <!-- Organization Schema -->
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "Organization",
+        "@@context": "https://schema.org",
+        "@@type": "Organization",
         "name": "UmangIndia",
         "url": "https://umangindia.com",
         "logo": "https://umangindia.com/images/icon.png",
         "description": "259+ सरकारी योजनाओं की जानकारी। पात्रता, लाभ और आवेदन प्रक्रिया की जानकारी। PM किसान, आयुष्मान भारत, मगनेगा।",
         "contactPoint": {
-            "@type": "ContactPoint",
+            "@@type": "ContactPoint",
             "contactType": "customer support",
             "url": "https://umangindia.com/contact"
         }
@@ -62,12 +62,12 @@
     </script>
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
+        "@@context": "https://schema.org",
+        "@@type": "WebSite",
         "name": "UmangIndia",
         "url": "https://umangindia.com",
         "potentialAction": {
-            "@type": "SearchAction",
+            "@@type": "SearchAction",
             "target": "https://umangindia.com/search?q={search_term_string}",
             "query-input": "required name=search_term_string"
         }
