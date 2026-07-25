@@ -39,6 +39,7 @@
     @if($gsc = \App\Models\Setting::get('google_search_console'))
     <meta name="google-site-verification" content="{{ $gsc }}">
     @endif
+    <meta name="google-adsense-account" content="ca-pub-9590212483900083">
     @if($ga4 = \App\Models\Setting::get('google_analytics_id'))
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ $ga4 }}"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ $ga4 }}');</script>
