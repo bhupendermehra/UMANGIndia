@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() === 'hi' ? 'hi' : 'en' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'UmangIndia - Government Schemes Information Portal')</title>
-    <meta name="description" content="@yield('description', 'Complete information about Indian government schemes, sarkari yojana, eligibility, benefits and application process.')">
-    <meta name="keywords" content="@yield('keywords', 'sarkari yojana, government schemes, pm kisan, ayushman bharat, mgnrega')">
-    <link rel="canonical" href="@yield('canonical', url()->current())">
+    <title>@yield('title', 'UmangIndia - सरकारी योजनाएं | Government Schemes Portal')</title>
+    <meta name="description" content="@yield('description', '259+ सरकारी योजनाओं की जानकारी। पात्रता, लाभ और आवेदन प्रक्रिया की जानकारी। PM किसान, आयुष्मान भारत, मगनेगा और अधिक।')">
+    <meta name="keywords" content="@yield('keywords', 'सरकारी योजना, government schemes, pm kisan, ayushman bharat, mgnrega, sarkari yojana')">
+    <link rel="canonical" href="https://umangindia.com{{ request()->is('language/*') ? '' : url()->current() }}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,36 +14,65 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="@yield('title', 'UmangIndia')">
-    <meta property="og:description" content="@yield('description', 'Government Schemes & Sarkari Yojana Portal')">
+    <meta property="og:title" content="@yield('title', 'UmangIndia - सरकारी योजनाएं | Government Schemes Portal')">
+    <meta property="og:description" content="@yield('description', '259+ सरकारी योजनाओं की जानकारी। पात्रता, लाभ और आवेदन प्रक्रिया की जानकारी।')">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ asset('images/logo.png') }}">
+    <meta property="og:image" content="{{ asset('images/og-image.png') }}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('title', 'UmangIndia - Government Schemes Portal')">
-    <meta name="twitter:description" content="@yield('description', 'Complete information about Indian government schemes & yojana')">
+    <meta name="twitter:title" content="@yield('title', 'UmangIndia - सरकारी योजनाएं | Government Schemes Portal')">
+    <meta name="twitter:description" content="@yield('description', '259+ सरकारी योजनाओं की जानकारी। PM किसान, आयुष्मान भारत, मगनेगा।')">
     <meta name="twitter:image" content="{{ asset('images/og-image.png') }}">
 
     <!-- Hreflang Tags for Bilingual SEO -->
     @if(app()->getLocale() === 'hi')
-    <link rel="alternate" hreflang="en" href="{{ url()->current() }}?lang=en">
+    <link rel="alternate" hreflang="en" href="{{ url('/') }}">
     <link rel="alternate" hreflang="hi" href="{{ url()->current() }}">
     @else
     <link rel="alternate" hreflang="en" href="{{ url()->current() }}">
-    <link rel="alternate" hreflang="hi" href="{{ url()->current() }}?lang=hi">
+    <link rel="alternate" hreflang="hi" href="{{ url('/language/hi') }}">
     @endif
-    <link rel="alternate" hreflang="x-default" href="{{ url('/en') }}">
+    <link rel="alternate" hreflang="x-default" href="{{ url('/') }}">
 
     @if($gsc = \App\Models\Setting::get('google_search_console'))
     <meta name="google-site-verification" content="{{ $gsc }}">
     @endif
-    <meta name="google-adsense-account" content="ca-pub-9590212483900083">
     @if($ga4 = \App\Models\Setting::get('google_analytics_id'))
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ $ga4 }}"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ $ga4 }}');</script>
     @endif
+
+    <!-- Organization Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "UmangIndia",
+        "url": "https://umangindia.com",
+        "logo": "https://umangindia.com/images/icon.png",
+        "description": "259+ सरकारी योजनाओं की जानकारी। पात्रता, लाभ और आवेदन प्रक्रिया की जानकारी। PM किसान, आयुष्मान भारत, मगनेगा।",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "url": "https://umangindia.com/contact"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "UmangIndia",
+        "url": "https://umangindia.com",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://umangindia.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
@@ -194,6 +223,10 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         Check Eligibility
                     </a>
+                    <!-- Trust Links for AdSense -->
+                    <a href="{{ route('pages.about') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">About</a>
+                    <a href="{{ route('pages.contact') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Contact</a>
+                    <a href="{{ route('pages.privacy') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Privacy</a>
                 </nav>
 
                 <!-- Search + Language + Mobile Menu -->
@@ -234,6 +267,10 @@
                     Downloads
                 </a>
                 <a href="{{ route('eligibility.index') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Check Eligibility</a>
+                <!-- Trust Links for AdSense -->
+                <a href="{{ route('pages.about') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">About</a>
+                <a href="{{ route('pages.contact') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Contact</a>
+                <a href="{{ route('pages.privacy') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Privacy</a>
                 <div class="border-t border-slate-200 mt-2 pt-2">
                     <p class="text-xs font-semibold text-slate-500 uppercase mb-1 tracking-wider">Categories</p>
                     @foreach(\App\Models\Category::orderBy('sort_order')->get() as $cat)
