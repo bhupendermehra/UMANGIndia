@@ -113,26 +113,14 @@ $schemaData = [
             @if($scheme->application_process)
             <div id="tab-process" class="tab-panel hidden content-prose prose max-w-none">
                 <h2>How to Apply</h2>
-                <ol class="list-decimal pl-5 space-y-2">
-                    @foreach(explode("\n", $scheme->application_process) as $step)
-                    @if(trim($step))
-                    <li>{{ $step }}</li>
-                    @endif
-                    @endforeach
-                </ol>
+                <p>{!! nl2br(e($scheme->application_process)) !!}</p>
             </div>
             @endif
 
             @if($scheme->required_documents)
             <div id="tab-documents" class="tab-panel hidden content-prose prose max-w-none">
                 <h2>Required Documents</h2>
-                <ul class="list-disc pl-5 space-y-1">
-                    @foreach(explode(", ", $scheme->required_documents) as $doc)
-                    @if(trim($doc))
-                    <li>{{ $doc }}</li>
-                    @endif
-                    @endforeach
-                </ul>
+                <p>{!! nl2br(e($scheme->required_documents)) !!}</p>
             </div>
             @endif
         </section>
