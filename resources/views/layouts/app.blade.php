@@ -173,8 +173,8 @@
 
     <!-- Header -->
     <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex items-center justify-between h-16 gap-4">
+        <div class="max-w-7xl mx-auto px-4 overflow-x-auto scrollbar-hide">
+            <div class="flex items-center justify-between h-16 gap-2">
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
                     <img src="{{ asset('images/logo.png') }}" alt="UmangIndia Logo" class="h-10 w-auto" width="120" height="40">
@@ -184,52 +184,53 @@
                     </div>
                 </a>
 
-                <!-- Desktop Nav -->
-                <nav class="hidden md:flex items-center space-x-1 overflow-x-auto flex-nowrap scrollbar-hide">
-                    <a href="{{ route('home') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Home</a>
-                    <a href="{{ route('schemes.index') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">All Yojana</a>
-                    <div class="relative group">
-                        <button class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 flex items-center transition">
-                            Categories
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div class="absolute left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border py-2 hidden group-hover:block z-50">
-                            @foreach(\App\Models\Category::orderBy('sort_order')->get() as $cat)
-                            <a href="{{ route('categories.show', $cat) }}" class="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 transition">
-                                <span class="w-5 h-5 rounded bg-blue-50 flex items-center justify-center">{!! \App\Helpers\IconHelper::categorySvg($cat->slug, 'w-3 h-3 text-blue-600') !!}</span>
-                                {{ $cat->name }}
-                            </a>
-                            @endforeach
+                <!-- Desktop Nav Links + Dropdowns -->
+                <div class="hidden md:flex items-center flex-1 min-w-0 relative self-stretch">
+                    <nav class="flex items-center space-x-0 flex-1 min-w-max">
+                        <a href="{{ route('home') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Home</a>
+                        <a href="{{ route('schemes.index') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">All Yojana</a>
+                        <div class="relative group">
+                            <button class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 flex items-center transition">
+                                Categories
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="absolute left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border py-2 hidden group-hover:block z-50">
+                                @foreach(\App\Models\Category::orderBy('sort_order')->get() as $cat)
+                                <a href="{{ route('categories.show', $cat) }}" class="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 transition">
+                                    <span class="w-5 h-5 rounded bg-blue-50 flex items-center justify-center">{!! \App\Helpers\IconHelper::categorySvg($cat->slug, 'w-3 h-3 text-blue-600') !!}</span>
+                                    {{ $cat->name }}
+                                </a>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
-                    <div class="relative group">
-                        <button class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 flex items-center transition">
-                            States
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div class="absolute left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border py-2 hidden group-hover:block z-50 max-h-72 overflow-y-auto">
-                            @foreach(\App\Models\State::orderBy('is_central', 'desc')->orderBy('name')->get() as $st)
-                            <a href="{{ route('states.show', $st) }}" class="block px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 transition">{{ $st->name }}</a>
-                            @endforeach
+                        <div class="relative group">
+                            <button class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 flex items-center transition">
+                                States
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="absolute left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border py-2 hidden group-hover:block z-50 max-h-72 overflow-y-auto">
+                                @foreach(\App\Models\State::orderBy('is_central', 'desc')->orderBy('name')->get() as $st)
+                                <a href="{{ route('states.show', $st) }}" class="block px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 transition">{{ $st->name }}</a>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
-                    <a href="{{ route('schemes.latest') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Latest</a>
-                    <a href="{{ route('calendar.index') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Calendar</a>
-                    <a href="{{ route('pdfs.index') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">
-                        <svg class="w-3.5 h-3.5 inline -mt-0.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                        Downloads
-                    </a>
-                    <a href="{{ route('eligibility.index') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition inline-flex items-center gap-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                        Check Eligibility
-                    </a>
-                    <!-- Trust Links for AdSense -->
-                    <a href="{{ route('pages.about') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">About</a>
-                    <a href="{{ route('pages.contact') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Contact</a>
-                    <a href="{{ route('pages.privacy') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Privacy</a>
-                </nav>
+                        <a href="{{ route('schemes.latest') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Latest</a>
+                        <a href="{{ route('calendar.index') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Calendar</a>
+                        <a href="{{ route('pdfs.index') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">
+                            <svg class="w-3.5 h-3.5 inline -mt-0.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Downloads
+                        </a>
+                        <a href="{{ route('eligibility.index') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition inline-flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            Check Eligibility
+                        </a>
+                        <a href="{{ route('pages.about') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">About</a>
+                        <a href="{{ route('pages.contact') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Contact</a>
+                        <a href="{{ route('pages.privacy') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Privacy</a>
+                    </nav>
+                </div>
 
                 <!-- Search + Language + Mobile Menu -->
                 <div class="flex items-center space-x-2">
