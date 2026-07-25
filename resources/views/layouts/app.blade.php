@@ -143,6 +143,8 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         #mobile-menu { transition: max-height 0.3s ease, opacity 0.2s ease; overflow: hidden; }
         .footer-gradient { background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 
     <!-- Schema.org -->
@@ -183,7 +185,7 @@
                 </a>
 
                 <!-- Desktop Nav -->
-                <nav class="hidden md:flex items-center space-x-1">
+                <nav class="hidden md:flex items-center space-x-1 overflow-x-auto flex-nowrap scrollbar-hide">
                     <a href="{{ route('home') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Home</a>
                     <a href="{{ route('schemes.index') }}" class="text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">All Yojana</a>
                     <div class="relative group">
@@ -232,13 +234,13 @@
                 <!-- Search + Language + Mobile Menu -->
                 <div class="flex items-center space-x-2">
                     <!-- Language Switcher -->
-                    <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden text-sm">
+                    <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden text-sm flex-shrink-0">
                         <a href="{{ route('language.switch', 'en') }}" class="px-3 py-2 font-medium transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-blue-50' }}" title="English">EN</a>
                         <a href="{{ route('language.switch', 'hi') }}" class="px-3 py-2 font-medium transition {{ app()->getLocale() === 'hi' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-blue-50' }}" title="हिंदी">हिंदी</a>
                     </div>
-                    <form action="{{ route('search') }}" method="GET" class="hidden sm:block">
+                    <form action="{{ route('search') }}" method="GET" class="hidden sm:block flex-shrink-0">
                         <div class="relative">
-                            <input type="text" name="q" value="{{ request('q') }}" placeholder="Search schemes..." class="w-48 lg:w-64 pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 bg-slate-50 focus-ring">
+                            <input type="text" name="q" value="{{ request('q') }}" placeholder="Search schemes..." class="w-36 lg:w-48 pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 bg-slate-50 focus-ring">
                             <svg class="absolute left-3 top-2.5 h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </div>
                     </form>
