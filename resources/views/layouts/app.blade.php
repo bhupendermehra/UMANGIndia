@@ -173,7 +173,7 @@
 
     <!-- Header -->
     <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div class="max-w-7xl mx-auto px-4 overflow-x-auto scrollbar-hide">
+        <div class="max-w-7xl mx-auto px-4 overflow-x-auto overflow-y-visible scrollbar-hide">
             <div class="flex items-center justify-between h-16 gap-2">
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
