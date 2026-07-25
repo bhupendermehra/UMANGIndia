@@ -21,7 +21,17 @@
         <priority>0.5</priority>
     </url>
     <url>
+        <loc>{{ url('/contact') }}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.4</priority>
+    </url>
+    <url>
         <loc>{{ url('/privacy-policy') }}</loc>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>{{ url('/terms-and-conditions') }}</loc>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
@@ -29,6 +39,30 @@
         <loc>{{ url('/disclaimer') }}</loc>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
+    </url>
+
+    <!-- Articles -->
+    @foreach($articles as $article)
+    <url>
+        <loc>{{ url('/article/' . $article->slug) }}</loc>
+        <lastmod>{{ $article->updated_at?->format('Y-m-d') }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    @endforeach
+
+    <!-- Latest Schemes -->
+    <url>
+        <loc>{{ url('/latest') }}</loc>
+        <changefreq>daily</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Other Pages -->
+    <url>
+        <loc>{{ url('/calendar') }}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
     </url>
 
     <!-- Schemes -->

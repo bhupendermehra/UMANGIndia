@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'UmangIndia - Government Schemes & Sarkari Yojana Portal')
-@section('description', 'Complete information about Indian government schemes. Check eligibility, benefits and application process for PM Kisan, Ayushman Bharat, MGNREGA and 500+ schemes.')
+@section('title', 'UmangIndia - सरकारी योजनाएं | Government Schemes Portal')
+@section('description', '259+ सरकारी योजनाओं की जानकारी। पात्रता, लाभ और आवेदन प्रक्रिया की जानकारी। PM किसान, आयुष्मान भारत, मगनेगा और अधिक।')
 
 @section('schema')
 <?php
@@ -33,7 +33,7 @@ $siteSchema = [
         <div class="max-w-3xl">
             <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
                 <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-                <span class="text-sm text-blue-100">{{ $totalSchemes }}+ Schemes Updated</span>
+                <span class="text-sm text-blue-100">{{ $totalSchemes }}+ Schemes Listed</span>
             </div>
             <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
                 Find the Right<br>
@@ -41,7 +41,7 @@ $siteSchema = [
                 for You
             </h1>
             <p class="text-lg text-blue-100/80 mb-8 max-w-xl">
-                Check eligibility, benefits, and application process for PM Kisan, Ayushman Bharat, MGNREGA and {{ $totalSchemes }}+ schemes.
+                Check eligibility, benefits, and application process for PM Kisan, Ayushman Bharat, MGNREGA and {{ $totalSchemes }}+ schemes. An independent information portal — not affiliated with any government body.
             </p>
             <form action="{{ route('search') }}" method="GET" class="flex flex-col sm:flex-row gap-3 max-w-xl">
                 <div class="flex-1 relative">
@@ -211,14 +211,13 @@ $siteSchema = [
 
 <section class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-slate-200 mt-10" id="trust-section">
     <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold text-slate-900">Trusted by Millions</h2>
-        <p class="text-slate-500 mt-2">Helping Indians access government welfare since 2024</p>
+        <h2 class="text-2xl font-bold text-slate-900">Why Use UmangIndia</h2>
+        <p class="text-slate-500 mt-2">An independent information portal for Indian government schemes</p>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div><div class="text-3xl font-bold text-blue-600" data-count="200" data-suffix="+">0</div><div class="text-sm text-slate-500 mt-1">Schemes Listed</div></div>
-        <div><div class="text-3xl font-bold text-blue-600" data-count="37" data-suffix="">0</div><div class="text-sm text-slate-500 mt-1">States Covered</div></div>
-        <div><div class="text-3xl font-bold text-blue-600" data-count="10" data-suffix="L+">0</div><div class="text-sm text-slate-500 mt-1">Users Helped</div></div>
-        <div><div class="text-3xl font-bold text-blue-600" data-count="4.8" data-suffix="★" data-decimal="true">0</div><div class="text-sm text-slate-500 mt-1">User Rating</div></div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-6 text-center">
+        <div><div class="text-3xl font-bold text-blue-600">{{ number_format(\App\Models\Scheme::active()->count()) }}+</div><div class="text-sm text-slate-500 mt-1">Schemes Listed</div></div>
+        <div><div class="text-3xl font-bold text-blue-600">{{ \App\Models\State::count() }}</div><div class="text-sm text-slate-500 mt-1">States Covered</div></div>
+        <div><div class="text-3xl font-bold text-blue-600">{{ \App\Models\Category::count() }}</div><div class="text-sm text-slate-500 mt-1">Categories</div></div>
     </div>
 </section>
 
@@ -264,8 +263,8 @@ $siteSchema = [
     <div class="max-w-4xl mx-auto text-center">
         <h2 class="text-2xl md:text-3xl font-bold section-title mb-4">About UmangIndia</h2>
         <div class="text-slate-600 leading-relaxed space-y-3">
-            <p>UmangIndia is your trusted portal for complete information about Indian government schemes (Sarkari Yojana). We provide detailed information about eligibility criteria, benefits, application process, and required documents for all central and state government welfare schemes.</p>
-            <p>Our mission is to help every Indian citizen understand and access the government schemes they are entitled to. From PM Kisan and Ayushman Bharat to MGNREGA and Sukanya Samriddhi Yojana, we cover it all.</p>
+            <p>UmangIndia is an independent information portal providing details about Indian government schemes (Sarkari Yojana). We compile and organize information about eligibility criteria, benefits, application process, and required documents for central and state government welfare schemes.</p>
+            <p>Our goal is to help Indian citizens find and understand government welfare schemes. From PM Kisan and Ayushman Bharat to MGNREGA and Sukanya Samriddhi Yojana, we cover schemes across multiple categories.</p>
         </div>
         <div class="mt-6 p-4 rounded-2xl border border-amber-200 bg-amber-50">
             <p class="text-sm text-slate-600"><strong class="text-saffron-500">Disclaimer:</strong> This is an informational portal. For official information and applications, please visit the respective government websites. We do not represent any government body.</p>

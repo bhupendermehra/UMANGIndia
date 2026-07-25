@@ -40,7 +40,7 @@ class ExpandedSchemeSeeder2 extends Seeder
                     'title_hi' => $s['th'] ?? '',
                     'short_description' => $s['sh'] ?? '',
                     'short_description_hi' => $s['sh_th'] ?? '',
-                    'status' => 'active',
+                    'status' => 'draft',
                     'is_featured' => false,
                     'eligibility' => $s['el'] ?? '',
                     'eligibility_hi' => $s['el_th'] ?? '',

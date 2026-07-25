@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'About UmangIndia - Government Schemes Portal')
+@section('title', 'About UmangIndia - Independent Government Schemes Information Portal')
 
 @section('content')
 <div class="max-w-3xl mx-auto">
@@ -16,7 +16,7 @@
         <h1 class="text-2xl md:text-3xl font-bold section-title mb-6">About UmangIndia</h1>
 
         <div class="content-prose prose max-w-none text-slate-700 space-y-4">
-            <p>UmangIndia is an informational portal providing comprehensive details about Indian government schemes (Sarkari Yojana). Our mission is to help every citizen understand and access welfare schemes they are entitled to.</p>
+            <p>UmangIndia is an independent, privately-run informational portal providing comprehensive details about Indian government schemes (Sarkari Yojana). We are not affiliated with, endorsed by, or connected to the Government of India or any state government. Our goal is to help citizens find and understand welfare schemes they may be eligible for.</p>
             <p>We cover schemes across categories including Education, Health, Agriculture, Housing, Employment, Social Welfare, Financial Inclusion, and more. Our team works to keep the information up-to-date with the latest government announcements.</p>
 
             <h2>Our Mission</h2>
@@ -24,7 +24,7 @@
 
             <h2>What We Offer</h2>
             <ul class="list-disc pl-5 space-y-2">
-                <li>Detailed information about 25+ government schemes</li>
+                <li>Detailed information about government schemes across India</li>
                 <li>Eligibility criteria for each scheme</li>
                 <li>Step-by-step application process</li>
                 <li>Required documents checklist</li>

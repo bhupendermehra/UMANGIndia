@@ -8,16 +8,25 @@
 <?php
 $schemaData = [
     '@context' => 'https://schema.org',
-    '@type' => 'GovernmentService',
-    'name' => $scheme->title,
+    '@type' => 'Article',
+    'headline' => $scheme->title,
     'description' => $scheme->short_description,
     'url' => url()->current(),
-    'provider' => [
-        '@type' => 'GovernmentOrganization',
-        'name' => 'Government of India',
+    'author' => [
+        '@type' => 'Organization',
+        'name' => 'UmangIndia',
+        'url' => url('/'),
     ],
-    'areaServed' => 'IN',
-    'serviceType' => $scheme->category->name,
+    'publisher' => [
+        '@type' => 'Organization',
+        'name' => 'UmangIndia',
+        'url' => url('/'),
+    ],
+    'mainEntityOfPage' => url()->current(),
+    'about' => [
+        '@type' => 'Thing',
+        'name' => $scheme->category->name,
+    ],
 ];
 ?>
 <script type="application/ld+json">{!! json_encode($schemaData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>

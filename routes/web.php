@@ -21,6 +21,11 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\StateController as AdminStateController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
+use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\SeoDraftController;
+use App\Http\Controllers\Admin\SeoMonitorController;
+use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Api\SeoDraftImportController;
 use Illuminate\Support\Facades\Route;
 
 // Language switcher
@@ -78,6 +83,12 @@ Route::get('/downloads', [PdfController::class, 'index'])->name('pdfs.index');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
 
+// Notification acknowledgment
+Route::post('/notification/acknowledge/{notification}', function (\App\Models\Notification $notification) {
+    session(['notification_acknowledged_' . $notification->id => true]);
+    return response()->json(['success' => true]);
+})->name('notification.acknowledge');
+
 // Login redirect (for auth middleware compatibility)
 Route::get('/login', fn() => redirect()->route('admin.login'))->name('login');
 
@@ -103,7 +114,31 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
 
-    // Articles CRUD
+    // Articles CRUD (enhanced)
     Route::resource('articles', AdminArticleController::class)->except(['show']);
     Route::post('articles/{article}/restore', [AdminArticleController::class, 'restore'])->name('articles.restore');
+    Route::post('articles/bulk-action', [AdminArticleController::class, 'bulkAction'])->name('articles.bulk-action');
+
+    // Notifications CRUD
+    Route::resource('notifications', NotificationController::class)->except(['show']);
+
+    // SEO Drafts (from SEO Agent)
+    Route::resource('seo-drafts', SeoDraftController::class)->only(['index', 'show']);
+    Route::post('seo-drafts/{draft}/approve', [SeoDraftController::class, 'approve'])->name('seo-drafts.approve');
+    Route::post('seo-drafts/{draft}/reject', [SeoDraftController::class, 'reject'])->name('seo-drafts.reject');
+    Route::post('seo-drafts/{draft}/publish', [SeoDraftController::class, 'publishAsArticle'])->name('seo-drafts.publish');
+
+    // SEO Monitor
+    Route::get('seo-monitor', [SeoMonitorController::class, 'index'])->name('seo-monitor.index');
+    Route::post('seo-monitor/run-check', [SeoMonitorController::class, 'runCheck'])->name('seo-monitor.run-check');
+
+    // Activity Logs
+    Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
+    Route::post('activity-logs/clear', [ActivityLogController::class, 'clear'])->name('activity-logs.clear');
+});
+
+// API Routes (no CSRF for SEO agent)
+Route::prefix('api')->group(function () {
+    Route::post('seo-agent/import-draft', [SeoDraftImportController::class, 'import']);
+    Route::get('seo-agent/health', [SeoDraftImportController::class, 'health']);
 });

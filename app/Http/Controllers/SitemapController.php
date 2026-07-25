@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Scheme;
 use App\Models\Category;
 use App\Models\State;
+use App\Models\Article;
 
 class SitemapController extends Controller
 {
@@ -13,10 +14,11 @@ class SitemapController extends Controller
         $schemes = Scheme::active()->latest('updated_at')->get();
         $categories = Category::all();
         $states = State::all();
+        $articles = Article::where('status', 'published')->latest('updated_at')->get();
 
         return response()
-            ->view('sitemap.xml', compact('schemes', 'categories', 'states'))
-            ->header('Content-Type', 'application/xml');
+            ->view('sitemap', compact('schemes', 'categories', 'states', 'articles'))
+            ->header('Content-Type', 'text/xml');
     }
 
     public function robots()

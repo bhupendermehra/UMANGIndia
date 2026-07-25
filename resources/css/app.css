@@ -83,7 +83,7 @@ body {
 }
 
 .tricolor-top {
-    background: linear-gradient(90deg, #ff9933 0 33%, #ffffff 33% 66%, #138a1a 66% 100%);
+    background: linear-gradient(90deg, #0b4ea2 0 50%, #f58220 50% 100%);
     height: 4px;
 }
 

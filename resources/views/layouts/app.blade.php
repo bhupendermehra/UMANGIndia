@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'UmangIndia - Government Schemes & Sarkari Yojana Portal')</title>
+    <title>@yield('title', 'UmangIndia - Government Schemes Information Portal')</title>
     <meta name="description" content="@yield('description', 'Complete information about Indian government schemes, sarkari yojana, eligibility, benefits and application process.')">
     <meta name="keywords" content="@yield('keywords', 'sarkari yojana, government schemes, pm kisan, ayushman bharat, mgnrega')">
+    <link rel="canonical" href="@yield('canonical', url()->current())">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,10 +26,15 @@
     <meta name="twitter:description" content="@yield('description', 'Complete information about Indian government schemes & yojana')">
     <meta name="twitter:image" content="{{ asset('images/og-image.png') }}">
 
-    <!-- Hreflang Tags -->
-    <link rel="alternate" href="{{ url()->current() }}" hreflang="hi">
-    <link rel="alternate" href="{{ url()->current() }}" hreflang="en">
-    <link rel="alternate" href="{{ url()->current() }}" hreflang="x-default">
+    <!-- Hreflang Tags for Bilingual SEO -->
+    @if(app()->getLocale() === 'hi')
+    <link rel="alternate" hreflang="en" href="{{ url()->current() }}?lang=en">
+    <link rel="alternate" hreflang="hi" href="{{ url()->current() }}">
+    @else
+    <link rel="alternate" hreflang="en" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="hi" href="{{ url()->current() }}?lang=hi">
+    @endif
+    <link rel="alternate" hreflang="x-default" href="{{ url('/en') }}">
 
     @if($gsc = \App\Models\Setting::get('google_search_console'))
     <meta name="google-site-verification" content="{{ $gsc }}">
@@ -141,8 +147,8 @@
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
                     <img src="{{ asset('images/logo.png') }}" alt="UmangIndia Logo" class="h-10 w-auto" width="120" height="40">
                     <div class="hidden sm:block">
-                        <span class="text-lg font-bold text-blue-600">UMANG</span><span class="text-lg font-bold text-amber-500">India</span>
-                        <p class="text-xs text-slate-500 -mt-1 tracking-wide">Government Schemes Portal</p>
+                <span class="text-lg font-bold text-blue-600">UMANG</span><span class="text-lg font-bold text-amber-500">India</span>
+                    <p class="text-xs text-slate-500 -mt-1 tracking-wide">Independent Information Portal</p>
                     </div>
                 </a>
 
@@ -194,7 +200,7 @@
                     <!-- Language Switcher -->
                     <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden text-sm">
                         <a href="{{ route('language.switch', 'en') }}" class="px-3 py-2 font-medium transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-blue-50' }}" title="English">EN</a>
-                        <a href="{{ route('language.switch', 'hi') }}" class="px-3 py-2 font-medium transition {{ app()->getLocale() === 'hi' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-blue-50' }}" title="हिंदी">हि</a>
+                        <a href="{{ route('language.switch', 'hi') }}" class="px-3 py-2 font-medium transition {{ app()->getLocale() === 'hi' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-blue-50' }}" title="हिंदी">हिंदी</a>
                     </div>
                     <form action="{{ route('search') }}" method="GET" class="hidden sm:block">
                         <div class="relative">
@@ -310,9 +316,10 @@
 
             <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm">
                 <p class="text-white">&copy; {{ date('Y') }} UmangIndia.com. All rights reserved.</p>
-                <p class="mt-2 text-gray-500">This is an informational portal. For official information, visit <a href="https://www.india.gov.in" class="text-saffron-400 hover:underline" target="_blank" rel="noopener">india.gov.in</a></p>
-                <!-- Tricolor Bottom -->
-                <div class="mt-4 h-1 rounded-full overflow-hidden max-w-xs mx-auto" style="background: linear-gradient(90deg, #FF9933 0%, #FF9933 33%, #FFFFFF 33%, #FFFFFF 66%, #138A1A 66%, #138A1A 100%);"></div>
+                <div class="mt-3 p-3 rounded-lg bg-white/5 border border-white/10 max-w-2xl mx-auto">
+                    <p class="text-gray-300 text-xs leading-relaxed"><strong class="text-white">Disclaimer:</strong> UmangIndia is an independent, privately-run information portal. It is NOT affiliated with, endorsed by, or connected to the Government of India, UMANG (umang.gov.in), or any state government. For official information, please visit <a href="https://www.india.gov.in" class="text-saffron-400 hover:underline" target="_blank" rel="noopener noreferrer">india.gov.in</a> or the respective government department.</p>
+                </div>
+                <div class="mt-4 h-1 rounded-full overflow-hidden max-w-xs mx-auto" style="background: linear-gradient(90deg, #0b4ea2 0%, #0b4ea2 50%, #f58220 50%, #f58220 100%);"></div>
             </div>
         </div>
     </footer>

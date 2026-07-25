@@ -19,7 +19,7 @@ foreach ($upcomingDeadlines as $i => $scheme) {
         '@type' => 'ListItem',
         'position' => $i + 1,
         'item' => [
-            '@type' => 'GovernmentService',
+            '@type' => 'WebPage',
             'name' => $scheme->title,
             'url' => route('schemes.show', $scheme),
         ],
