@@ -85,7 +85,7 @@ class ExpandTopSchemes extends Seeder
             'benefits' => '₹6,000 per year income support released in 3 equal installments of ₹2,000 every 4 months. Payment is made directly to the Aadhaar-linked bank account via DBT. No middlemen involved. Approximately 14.5 crore farmers benefit nationwide.',
             'application_process' => "1. Visit https://pmkissan.gov.in\n2. Click on 'Farmers Corner'\n3. Select 'New Farmer Registration'\n4. Enter Aadhaar number and captcha\n5. Fill personal details (name, mobile, bank account)\n6. Enter land details (survey number, khata number)\n7. Upload documents (Aadhaar, land records, bank passbook)\n8. Submit and note the application reference number",
             'required_documents' => 'Aadhaar card (mandatory), Land records (7/12 extract or Khatauni), Bank passbook or cancelled cheque, Registered mobile number, Passport size photograph',
-            'meta_title' => 'PM Kisan Samman Nidhi 2026: ₹6,000 Apply Online, Eligibility & Status Check',
+            'meta_title' => 'PM Kisan Samman Nidhi 2026: ₹6,000 Apply Online, Eligibility & Status',
             'meta_description' => 'PM Kisan Samman Nidhi provides ₹6,000/year to farmers. Check eligibility, apply online, track payment status at pmkissan.gov.in. Complete guide 2026.',
             'meta_keywords' => 'PM Kisan, PM Kisan 2026, Kisan Samman Nidhi, ₹6000 kisan, pmkissan.gov.in, farmer scheme',
             'title_hi' => 'पीएम किसान सम्मान निधि',
