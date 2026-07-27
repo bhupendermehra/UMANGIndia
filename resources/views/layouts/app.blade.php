@@ -98,6 +98,8 @@
         .footer-gradient { background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Hover dropdown for desktop nav */
+        .nav-group:hover .nav-dropdown { display: block !important; }
     </style>
 
     <!-- Schema.org -->
@@ -150,12 +152,12 @@
                     <nav class="flex items-center space-x-0 flex-1 min-w-max">
                         <a href="{{ route('home') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Home</a>
                         <a href="{{ route('schemes.index') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">All Yojana</a>
-                        <div class="relative group">
+                        <div class="relative group nav-group">
                             <button class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 flex items-center transition">
                                 Categories
                                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
-                            <div class="absolute left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border py-2 hidden group-hover:block z-50">
+                            <div class="nav-dropdown absolute left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border py-2 z-50">
                                 @foreach(\App\Models\Category::orderBy('sort_order')->get() as $cat)
                                 <a href="{{ route('categories.show', $cat) }}" class="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 transition">
                                     <span class="w-5 h-5 rounded bg-blue-50 flex items-center justify-center">{!! \App\Helpers\IconHelper::categorySvg($cat->slug, 'w-3 h-3 text-blue-600') !!}</span>
@@ -164,12 +166,12 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="relative group">
+                        <div class="relative group nav-group">
                             <button class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 flex items-center transition">
                                 States
                                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
-                            <div class="absolute left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border py-2 hidden group-hover:block z-50 max-h-72 overflow-y-auto">
+                            <div class="nav-dropdown absolute left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border py-2 z-50 max-h-72 overflow-y-auto">
                                 @foreach(\App\Models\State::orderBy('is_central', 'desc')->orderBy('name')->get() as $st)
                                 <a href="{{ route('states.show', $st) }}" class="block px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 transition">{{ $st->name }}</a>
                                 @endforeach

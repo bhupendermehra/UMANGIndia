@@ -99,28 +99,28 @@ $schemaData = [
             @if($scheme->eligibility)
             <div id="tab-eligibility" class="tab-panel hidden content-prose prose max-w-none">
                 <h2>Eligibility Criteria</h2>
-                <p>{!! nl2br(e($scheme->eligibility)) !!}</p>
+                <p>{!! nl2br(e(str_replace('\n', "\n", $scheme->eligibility))) !!}</p>
             </div>
             @endif
 
             @if($scheme->benefits)
             <div id="tab-benefits" class="tab-panel hidden content-prose prose max-w-none">
                 <h2>Benefits</h2>
-                <p>{!! nl2br(e($scheme->benefits)) !!}</p>
+                <p>{!! nl2br(e(str_replace('\n', "\n", $scheme->benefits))) !!}</p>
             </div>
             @endif
 
             @if($scheme->application_process)
             <div id="tab-process" class="tab-panel hidden content-prose prose max-w-none">
                 <h2>How to Apply</h2>
-                <p>{!! nl2br(e($scheme->application_process)) !!}</p>
+                <p>{!! nl2br(e(str_replace('\n', "\n", $scheme->application_process))) !!}</p>
             </div>
             @endif
 
             @if($scheme->required_documents)
             <div id="tab-documents" class="tab-panel hidden content-prose prose max-w-none">
                 <h2>Required Documents</h2>
-                <p>{!! nl2br(e($scheme->required_documents)) !!}</p>
+                <p>{!! nl2br(e(str_replace('\n', "\n", $scheme->required_documents))) !!}</p>
             </div>
             @endif
         </section>
@@ -234,7 +234,7 @@ $schemaData = [
                         </svg>
                     </button>
                     <div class="hidden p-4 pt-0 text-slate-600 text-sm leading-relaxed faq-content">
-                        {!! nl2br(e($scheme->eligibility)) !!}
+                        {!! nl2br(e(str_replace('\n', "\n", $scheme->eligibility))) !!}
                     </div>
                 </div>
                 @endif
@@ -248,7 +248,7 @@ $schemaData = [
                         </svg>
                     </button>
                     <div class="hidden p-4 pt-0 text-slate-600 text-sm leading-relaxed faq-content">
-                        {!! nl2br(e($scheme->benefits)) !!}
+                        {!! nl2br(e(str_replace('\n', "\n", $scheme->benefits))) !!}
                     </div>
                 </div>
                 @endif
@@ -262,7 +262,7 @@ $schemaData = [
                         </svg>
                     </button>
                     <div class="hidden p-4 pt-0 text-slate-600 text-sm leading-relaxed faq-content">
-                        {!! nl2br(e($scheme->application_process)) !!}
+                        {!! nl2br(e(str_replace('\n', "\n", $scheme->application_process))) !!}
                     </div>
                 </div>
                 @endif
@@ -276,7 +276,7 @@ $schemaData = [
                         </svg>
                     </button>
                     <div class="hidden p-4 pt-0 text-slate-600 text-sm leading-relaxed faq-content">
-                        {!! nl2br(e($scheme->required_documents)) !!}
+                        {!! nl2br(e(str_replace('\n', "\n", $scheme->required_documents))) !!}
                     </div>
                 </div>
                 @endif
