@@ -51,6 +51,11 @@ Re-apply to Google AdSense after fixing "Low value content" rejection.
 4. Verify batch3.sql was correctly applied by checking live URLs for social-welfare-schemes-2026, women-welfare-schemes-2026, agriculture-schemes-farmers-2026, health-insurance-schemes-2026, and top-education-schemes-students before doing anything else.
 5. Run full Screaming Frog crawl for final comparison before claiming AdSense readiness.
 
+## SERVICES STATUS (check of Jul 29)
+- **Trading bot**: Project files present at `C:\Users\Anudip\Documents\my-trading-bot\`. Mode: PAPER (confirmed in README_AUTOSTART.md). No main.py/bot.py — runs via streamlit_app.py dashboard. SQLite persistence with WAL mode.
+- **SEO agent runner**: Was stopped. **Restarted** at end of session — confirmed 2 processes running. Schedules: 03:00, 06:30, 10:30, 14:00 UTC (≈08:30, 11:00, 15:00, 18:30 IST). Logs at `~/seo-agent/logs/`.
+- **SSH to Hostinger**: Intermittent — sometimes works, sometimes times out. Retry 2-3 times if first attempt fails.
+
 ## KEY CONNECTIONS
 - **SSH**: `ssh -p 65002 u710844744@46.28.45.195` (password: Youdo@#123)
 - **Live MySQL**: `mysql -u u710844744_Bhupe_umang -p'Bhupender@#5243' u710844744_umang_sata`
