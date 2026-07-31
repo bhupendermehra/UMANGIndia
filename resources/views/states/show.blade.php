@@ -71,7 +71,7 @@
 
     <div class="relative z-10 p-6 md:p-10 lg:p-12">
         @if($state->featured_image)
-        <img src="{{ $state->featured_image }}" alt="{{ $state->name }} banner" class="w-full h-48 md:h-64 object-cover rounded-xl mb-6">
+        <img src="{{ $state->featured_image ?? asset('images/state-default.jpg') }}" alt="{{ $state->name }} banner" class="w-full h-48 md:h-64 object-cover rounded-xl mb-6" width="1200" height="300">
         @endif
         <!-- Breadcrumb -->
         <nav class="text-sm mb-5">

@@ -1,3 +1,13 @@
+@php
+    $isActive = function($patterns) {
+        foreach ((array) $patterns as $p) {
+            if (request()->routeIs($p)) return true;
+        }
+        return false;
+    };
+    $announcement = \App\Models\Setting::get('announcement_text');
+    $manifestExists = file_exists(public_path('build/manifest.json'));
+@endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() === 'hi' ? 'hi' : 'en' }}">
 <head>
@@ -6,35 +16,30 @@
     <title>@yield('title', 'UmangIndia - सरकारी योजनाएं | Government Schemes Portal')</title>
     <meta name="description" content="@yield('description', '259+ सरकारी योजनाओं की जानकारी। पात्रता, लाभ और आवेदन प्रक्रिया की जानकारी। PM किसान, आयुष्मान भारत, मगनेगा और अधिक।')">
     <meta name="keywords" content="@yield('keywords', 'सरकारी योजना, government schemes, pm kisan, ayushman bharat, mgnrega, sarkari yojana')">
-    <link rel="canonical" href="{{ url()->current() }}">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Open Graph -->
     <meta property="og:title" content="@yield('title', 'UmangIndia - सरकारी योजनाएं | Government Schemes Portal')">
     <meta property="og:description" content="@yield('description', '259+ सरकारी योजनाओं की जानकारी। पात्रता, लाभ और आवेदन प्रक्रिया की जानकारी।')">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ asset('images/og-image.png') }}">
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('title', 'UmangIndia - सरकारी योजनाएं | Government Schemes Portal')">
     <meta name="twitter:description" content="@yield('description', '259+ सरकारी योजनाओं की जानकारी। PM किसान, आयुष्मान भारत, मगनेगा।')">
     <meta name="twitter:image" content="{{ asset('images/og-image.png') }}">
 
-    <!-- Hreflang Tags for Bilingual SEO -->
     @if(app()->getLocale() === 'hi')
     <link rel="alternate" hreflang="en" href="{{ url('/') }}">
     <link rel="alternate" hreflang="hi" href="{{ url()->current() }}">
+    <link rel="canonical" href="{{ url()->current() }}">
     @else
-    <link rel="alternate" hreflang="en" href="{{ url()->current() }}">
-    <link rel="alternate" hreflang="hi" href="{{ url('/language/hi') }}">
+    <link rel="canonical" href="{{ url()->current() }}">
     @endif
-    <link rel="alternate" hreflang="x-default" href="{{ url('/') }}">
+    <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}">
 
     @if($gsc = \App\Models\Setting::get('google_search_console'))
     <meta name="google-site-verification" content="{{ $gsc }}">
@@ -44,7 +49,6 @@
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ $ga4 }}');</script>
     @endif
 
-    <!-- Organization Schema -->
     <script type="application/ld+json">
     {
         "@@context": "https://schema.org",
@@ -74,44 +78,74 @@
     }
     </script>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
     @stack('meta')
 
-    <!-- Google AdSense -->
     @if(\App\Models\Setting::get('adsense_enabled') && \App\Models\Setting::get('adsense_publisher_id'))
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ \App\Models\Setting::get('adsense_publisher_id') }}" crossorigin="anonymous"></script>
     @endif
 
-    <!-- Tailwind CSS -->
+    @if($manifestExists)
+        @vite('resources/css/app.css')
+    @else
     <link rel="stylesheet" href="/css/tailwind.min.css">
+    @endif
+
     <style>
         .card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.15); }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 16px 32px -12px rgba(11,78,162,0.15); }
         .page-enter { animation: fadeInUp 0.3s ease-out; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        .tab-content { animation: fadeIn 0.2s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        #mobile-menu { transition: max-height 0.3s ease, opacity 0.2s ease; overflow: hidden; }
         .footer-gradient { background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        /* Hover dropdown for desktop nav */
-        .nav-group:hover .nav-dropdown { display: block !important; }
+        .nav-dropdown { display: none; position: absolute; }
+        .nav-group:hover > .nav-dropdown, .nav-group:focus-within > .nav-dropdown { display: block !important; }
+        #mobile-menu { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.25s ease; }
+        #mobile-menu.open { max-height: 800px; opacity: 1; }
+        #mobile-menu-btn.active .hamburger-top { transform: rotate(45deg) translate(5px,5px); }
+        #mobile-menu-btn.active .hamburger-middle { opacity: 0; }
+        #mobile-menu-btn.active .hamburger-bottom { transform: rotate(-45deg) translate(5px,-5px); }
+        .hamburger-line { transition: all 0.3s ease; }
+        #mobile-categories.collapsed { display: none; }
+        .article-content h2 { font-size: 1.75rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; padding-left: 1rem; border-left: 4px solid #2563eb; color: #1e293b; }
+        .article-content h3 { font-size: 1.25rem; font-weight: 500; margin-top: 1.5rem; margin-bottom: 0.75rem; color: #334155; }
+        .article-content p { font-size: 1.05rem; line-height: 1.8; margin-bottom: 1.25rem; color: #334155; max-width: 720px; }
+        .article-content ul, .article-content ol { font-size: 1.05rem; line-height: 1.8; margin-bottom: 1.25rem; padding-left: 1.5rem; color: #334155; max-width: 720px; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .article-content a { color: #2563eb; text-decoration: underline; text-underline-offset: 2px; }
+        .article-content a:hover { color: #1d4ed8; }
+        .article-content img { border-radius: 0.75rem; margin: 1.5rem 0; max-width: 100%; height: auto; }
+        .article-content blockquote { border-left: 4px solid #2563eb; padding-left: 1.25rem; margin: 1.5rem 0; color: #64748b; font-style: italic; }
+        .article-content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; overflow-x: auto; display: block; }
+        .article-content table th { background: #eff6ff; font-weight: 600; padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: left; }
+        .article-content table td { padding: 0.75rem 1rem; border: 1px solid #e2e8f0; }
+        .article-content table tr:nth-child(even) { background: #f8fafc; }
+        .article-content pre { background: #1e293b; color: #e2e8f0; padding: 1.25rem; border-radius: 0.75rem; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; }
+        .article-content code { font-size: 0.875rem; background: #f1f5f9; padding: 0.2rem 0.4rem; border-radius: 0.25rem; }
+        .article-content pre code { background: none; padding: 0; }
+        .toc-link { transition: all 0.2s ease; border-left: 2px solid transparent; }
+        .toc-link:hover { border-left-color: #2563eb; color: #2563eb; }
+        .toc-link.active { border-left-color: #2563eb; color: #2563eb; font-weight: 500; }
+        .faq-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, opacity 0.25s ease; opacity: 0; }
+        .faq-accordion-content.open { max-height: 300px; opacity: 1; }
+        .faq-accordion-icon { transition: transform 0.3s ease; }
+        .faq-accordion-icon.rotated { transform: rotate(45deg); }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .hero-animate { background-size: 200% 200%; animation: gradientShift 8s ease infinite; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     </style>
 
-    <!-- Schema.org -->
     @yield('schema')
     @stack('schema')
-
     @stack('styles')
 </head>
-<body class="app-shell text-slate-800 antialiased" style="font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;">
-    @php $announcement = \App\Models\Setting::get('announcement_text'); @endphp
+<body class="app-shell min-h-screen flex flex-col text-slate-800 antialiased" style="font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;">
+
     @if($announcement)
-    <!-- Announcement Bar -->
     <div id="announcement-bar" class="bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2.5 px-4 relative text-sm">
         <div class="max-w-7xl mx-auto flex items-center justify-center gap-3">
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
@@ -123,131 +157,148 @@
     </div>
     @endif
 
-    <!-- Tricolor Top Bar -->
     <div class="tricolor-top"></div>
 
-    <!-- Header -->
-    <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <!-- Utility Bar -->
-        <div class="hidden xl:flex items-center justify-end gap-4 px-4 py-1 text-xs text-slate-500 border-b border-slate-100 max-w-7xl mx-auto">
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/60">
+        <div class="hidden xl:flex items-center justify-end gap-4 px-6 py-1 text-xs text-slate-500 border-b border-slate-100 max-w-7xl mx-auto">
             <a href="{{ route('pages.about') }}" class="hover:text-blue-600 transition">About</a>
             <span class="text-slate-300">|</span>
             <a href="{{ route('pages.contact') }}" class="hover:text-blue-600 transition">Contact</a>
             <span class="text-slate-300">|</span>
             <a href="{{ route('pages.privacy') }}" class="hover:text-blue-600 transition">Privacy</a>
         </div>
-        <div class="max-w-7xl mx-auto px-4 overflow-x-auto overflow-y-visible scrollbar-hide">
-            <div class="flex items-center justify-between h-16 gap-2">
-                <!-- Logo -->
-                <a href="{{ route('home') }}" class="flex items-center gap-2">
-                    <img src="{{ asset('images/logo.png') }}" alt="UmangIndia Logo" class="h-10 w-auto" width="120" height="40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6"><!-- overflow handled on nav inner -->
+            <div class="flex items-center justify-between h-16 md:h-20 gap-2">
+                <a href="{{ route('home') }}" class="flex items-center gap-2.5 shrink-0">
+                    <img src="{{ asset('images/logo.png') }}" alt="UmangIndia Logo" class="h-9 md:h-10 w-auto" width="120" height="40">
                     <div class="hidden sm:block">
-                <span class="text-lg font-bold text-blue-600">UMANG</span><span class="text-lg font-bold text-amber-500">India</span>
-                    <p class="text-xs text-slate-500 -mt-1 tracking-wide">Independent Information Portal</p>
+                        <span class="text-lg font-extrabold text-blue-600 tracking-tight">UMANG</span><span class="text-lg font-extrabold text-amber-500 tracking-tight">India</span>
+                        <p class="text-[10px] text-slate-400 -mt-0.5 tracking-wider uppercase font-medium">Independent Information Portal</p>
                     </div>
                 </a>
 
-                <!-- Desktop Nav Links + Dropdowns -->
-                <div class="hidden md:flex items-center flex-1 min-w-0 relative self-stretch">
-                    <nav class="flex items-center space-x-0 flex-1 min-w-max">
-                        <a href="{{ route('home') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Home</a>
-                        <a href="{{ route('schemes.index') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">All Yojana</a>
-                        <div class="relative group nav-group">
-                            <button class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 flex items-center transition">
-                                Categories
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                <div class="hidden md:flex items-center flex-1 min-w-0 relative self-stretch overflow-visible">
+                    <nav class="flex items-center gap-1 flex-1 min-w-max py-1 overflow-visible">
+                        <a href="{{ route('home') }}" class="px-3 py-2 text-sm font-medium whitespace-nowrap rounded-lg transition-colors {{ $isActive('home') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-blue-50 hover:text-blue-600' }}">Home</a>
+
+                        <div class="relative nav-group">
+                            <button class="px-3 py-2 text-sm font-medium whitespace-nowrap rounded-lg transition-colors flex items-center gap-1 {{ $isActive(['schemes.*', 'categories.*', 'states.*']) ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-blue-50 hover:text-blue-600' }}">
+                                Yojana
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
-                            <div class="nav-dropdown absolute left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border py-2 z-50">
+                            <div class="nav-dropdown left-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-slate-200 py-2 z-[60]">
+                                <a href="{{ route('schemes.index') }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">All Yojana</a>
+                                <a href="{{ route('schemes.latest') }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">Latest Updates</a>
+                                <div class="border-t border-slate-100 my-1"></div>
+                                <p class="px-4 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Categories</p>
                                 @foreach(\App\Models\Category::orderBy('sort_order')->get() as $cat)
-                                <a href="{{ route('categories.show', $cat) }}" class="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 transition">
-                                    <span class="w-5 h-5 rounded bg-blue-50 flex items-center justify-center">{!! \App\Helpers\IconHelper::categorySvg($cat->slug, 'w-3 h-3 text-blue-600') !!}</span>
+                                <a href="{{ route('categories.show', $cat) }}" class="flex items-center gap-2.5 px-4 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                                    <span class="w-4 h-4 rounded bg-blue-50 flex items-center justify-center shrink-0">{!! \App\Helpers\IconHelper::categorySvg($cat->slug, 'w-2.5 h-2.5 text-blue-600') !!}</span>
                                     {{ $cat->name }}
                                 </a>
                                 @endforeach
-                            </div>
-                        </div>
-                        <div class="relative group nav-group">
-                            <button class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 flex items-center transition">
-                                States
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="nav-dropdown absolute left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border py-2 z-50 max-h-72 overflow-y-auto">
+                                <div class="border-t border-slate-100 my-1"></div>
+                                <p class="px-4 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">States</p>
+                                <div class="max-h-48 overflow-y-auto">
                                 @foreach(\App\Models\State::orderBy('is_central', 'desc')->orderBy('name')->get() as $st)
-                                <a href="{{ route('states.show', $st) }}" class="block px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 transition">{{ $st->name }}</a>
+                                <a href="{{ route('states.show', $st) }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">{{ $st->name }}</a>
                                 @endforeach
+                                </div>
                             </div>
                         </div>
-                        <a href="{{ route('schemes.latest') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Latest</a>
-                        <a href="{{ route('calendar.index') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">Calendar</a>
-                        <a href="{{ route('pdfs.index') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">
-                            <svg class="w-3.5 h-3.5 inline -mt-0.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            Downloads
-                        </a>
-                        <a href="{{ route('eligibility.index') }}" class="text-sm font-medium whitespace-nowrap px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition inline-flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                            Check Eligibility
-                        </a>
+
+                        <a href="{{ route('articles.index') }}" class="px-3 py-2 text-sm font-medium whitespace-nowrap rounded-lg transition-colors {{ $isActive('articles.*') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-blue-50 hover:text-blue-600' }}">Articles</a>
+
+                        <div class="relative nav-group">
+                            <button class="px-3 py-2 text-sm font-medium whitespace-nowrap rounded-lg transition-colors flex items-center gap-1 {{ $isActive(['calendar.*', 'pdfs.*', 'eligibility.*']) ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-blue-50 hover:text-blue-600' }}">
+                                More
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="nav-dropdown right-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-slate-200 py-2 z-[60]">
+                                <a href="{{ route('calendar.index') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                    Calendar
+                                </a>
+                                <a href="{{ route('pdfs.index') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    Downloads
+                                </a>
+                                <a href="{{ route('eligibility.index') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                    Eligibility
+                                </a>
+                            </div>
+                        </div>
                     </nav>
                 </div>
 
-                <!-- Search + Language + Mobile Menu -->
-                <div class="flex items-center space-x-2">
-                    <!-- Language Switcher -->
-                    <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden text-sm flex-shrink-0">
-                        <a href="{{ route('language.switch', 'en') }}" class="px-3 py-2 font-medium transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-blue-50' }}" title="English">EN</a>
-                        <a href="{{ route('language.switch', 'hi') }}" class="px-3 py-2 font-medium transition {{ app()->getLocale() === 'hi' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-blue-50' }}" title="हिंदी">हिंदी</a>
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden text-sm shrink-0">
+                        <a href="{{ route('language.switch', 'en') }}" class="px-2.5 py-1.5 font-medium transition-colors {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-500 hover:bg-blue-50 hover:text-blue-600' }}" title="English">EN</a>
+                        <a href="{{ route('language.switch', 'hi') }}" class="px-2.5 py-1.5 font-medium transition-colors {{ app()->getLocale() === 'hi' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-500 hover:bg-blue-50 hover:text-blue-600' }}" title="हिंदी">हिंदी</a>
                     </div>
-                    <form action="{{ route('search') }}" method="GET" class="hidden sm:block flex-shrink-0">
+                    <form action="{{ route('search') }}" method="GET" class="hidden sm:block">
                         <div class="relative">
-                            <input type="text" name="q" value="{{ request('q') }}" placeholder="Search schemes..." class="w-36 lg:w-48 pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 bg-slate-50 focus-ring">
+                            <input type="text" name="q" value="{{ request('q') }}" placeholder="Search schemes..." class="w-36 lg:w-48 pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 bg-slate-50 placeholder-slate-400 transition-all">
                             <svg class="absolute left-3 top-2.5 h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </div>
                     </form>
-                    <!-- Mobile menu button -->
-                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-blue-50">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-blue-50 transition-colors" aria-label="Toggle menu">
+                        <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path class="hamburger-line hamburger-top" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16"/>
+                            <path class="hamburger-line hamburger-middle" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"/>
+                            <path class="hamburger-line hamburger-bottom" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16"/>
+                        </svg>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white">
-            <div class="px-4 py-3">
-                <form action="{{ route('search') }}" method="GET" class="mb-3">
-                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Search schemes..." class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus-ring">
+        <div id="mobile-menu" class="md:hidden border-t border-slate-200/60 bg-white/95 backdrop-blur-xl">
+            <div class="px-4 py-4 space-y-1">
+                <form action="{{ route('search') }}" method="GET" class="mb-4">
+                    <div class="relative">
+                        <input type="text" name="q" value="{{ request('q') }}" placeholder="Search schemes..." class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 placeholder-slate-400">
+                        <svg class="absolute left-3 top-3 h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
                 </form>
-                <a href="{{ route('home') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Home</a>
-                <a href="{{ route('schemes.index') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">All Yojana</a>
-                <a href="{{ route('schemes.latest') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Latest</a>
-                <a href="{{ route('calendar.index') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Calendar</a>
-                <a href="{{ route('pdfs.index') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">
-                    <svg class="w-3.5 h-3.5 inline -mt-0.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
+                <a href="{{ route('home') }}" class="block px-3 py-2.5 text-sm font-medium rounded-lg {{ $isActive('home') ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-600' }} transition-colors">Home</a>
+                <a href="{{ route('schemes.index') }}" class="block px-3 py-2.5 text-sm font-medium rounded-lg {{ $isActive('schemes.*') ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-600' }} transition-colors">All Yojana</a>
+                <a href="{{ route('schemes.latest') }}" class="block px-3 py-2.5 text-sm font-medium rounded-lg {{ $isActive('schemes.latest') ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-600' }} transition-colors">Latest Updates</a>
+                <a href="{{ route('articles.index') }}" class="block px-3 py-2.5 text-sm font-medium rounded-lg {{ $isActive('articles.*') ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-600' }} transition-colors">Articles</a>
+                <a href="{{ route('calendar.index') }}" class="block px-3 py-2.5 text-sm font-medium rounded-lg {{ $isActive('calendar.*') ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-600' }} transition-colors">Calendar</a>
+                <a href="{{ route('pdfs.index') }}" class="block px-3 py-2.5 text-sm font-medium rounded-lg {{ $isActive('pdfs.*') ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-600' }} transition-colors">
+                    <svg class="w-3.5 h-3.5 inline -mt-0.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     Downloads
                 </a>
-                <a href="{{ route('eligibility.index') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Check Eligibility</a>
-                <!-- Trust Links for AdSense -->
-                <a href="{{ route('pages.about') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">About</a>
-                <a href="{{ route('pages.contact') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Contact</a>
-                <a href="{{ route('pages.privacy') }}" class="block py-2.5 text-sm font-medium hover:text-blue-600">Privacy</a>
-                <div class="border-t border-slate-200 mt-2 pt-2">
-                    <p class="text-xs font-semibold text-slate-500 uppercase mb-1 tracking-wider">Categories</p>
+                <a href="{{ route('eligibility.index') }}" class="block px-3 py-2.5 text-sm font-medium rounded-lg {{ $isActive('eligibility.*') ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-600' }} transition-colors">Check Eligibility</a>
+
+                <div class="border-t border-slate-100 pt-3 mt-3">
+                    <button onclick="toggleMobileCategories(this)" class="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                        <span>Categories & States</span>
+                        <svg class="w-4 h-4 transition-transform duration-200 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div id="mobile-categories" class="space-y-0.5">
                     @foreach(\App\Models\Category::orderBy('sort_order')->get() as $cat)
-                    <a href="{{ route('categories.show', $cat) }}" class="flex items-center gap-2 py-2.5 text-sm hover:text-blue-600">
-                        <span class="w-5 h-5 rounded bg-blue-50 flex items-center justify-center">{!! \App\Helpers\IconHelper::categorySvg($cat->slug, 'w-3 h-3 text-blue-600') !!}</span>
+                    <a href="{{ route('categories.show', $cat) }}" class="flex items-center gap-2.5 px-3 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                        <span class="w-5 h-5 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">{!! \App\Helpers\IconHelper::categorySvg($cat->slug, 'w-3 h-3 text-blue-600') !!}</span>
                         {{ $cat->name }}
                     </a>
                     @endforeach
+                    </div>
+                </div>
+                <div class="border-t border-slate-100 pt-3 mt-1">
+                    <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Links</p>
+                    <a href="{{ route('pages.about') }}" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">About</a>
+                    <a href="{{ route('pages.contact') }}" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">Contact</a>
+                    <a href="{{ route('pages.privacy') }}" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">Privacy</a>
+                    <a href="{{ route('pages.disclaimer') }}" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">Disclaimer</a>
+                    <a href="{{ route('pages.terms') }}" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">Terms</a>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- AdSense Header Banner -->
     @if(\App\Models\Setting::get('adsense_enabled') && \App\Models\Setting::get('adsense_header_slot'))
     <div class="max-w-7xl mx-auto px-4 my-4 text-center">
         <ins class="adsbygoogle" style="display:block" data-ad-client="{{ \App\Models\Setting::get('adsense_publisher_id') }}" data-ad-slot="{{ \App\Models\Setting::get('adsense_header_slot') }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -255,59 +306,71 @@
     </div>
     @endif
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 py-6">
-        @yield('content')
+    <main class="flex-1">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            @yield('content')
+        </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer-gradient text-gray-300 mt-12">
-        <div class="max-w-7xl mx-auto px-4 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- About -->
+    <!-- Newsletter CTA Section (only on non-article pages since articles have their own) -->
+    @if(!$isActive('articles.show'))
+    <section class="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+            <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3">Stay Updated with Government Schemes</h2>
+            <p class="text-blue-200 mb-6 text-sm sm:text-base">Get weekly updates on new schemes, eligibility criteria, and application deadlines in your inbox.</p>
+            <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                @csrf
+                <input type="email" name="email" required placeholder="Enter your email address" class="flex-1 px-4 py-3 rounded-xl text-sm border-0 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-slate-400">
+                <button type="submit" class="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl transition-colors text-sm whitespace-nowrap">Subscribe</button>
+            </form>
+            <p class="text-blue-300/60 text-xs mt-3">No spam. Unsubscribe anytime.</p>
+        </div>
+    </section>
+    @endif
+
+    <footer class="footer-gradient text-gray-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
                 <div>
-                    <div class="flex items-center gap-2 mb-4">
-                        <img src="{{ asset('images/icon.png') }}" alt="UmangIndia" loading="lazy" class="h-10 w-10 rounded-lg">
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <img src="{{ asset('images/icon.png') }}" alt="UmangIndia" loading="lazy" class="h-10 w-10 rounded-xl">
                         <div>
-                            <span class="text-white font-bold text-lg">UMANG</span><span class="text-saffron-400 font-bold text-lg">India</span>
+                            <span class="text-white font-extrabold text-lg tracking-tight">UMANG</span><span class="text-amber-400 font-extrabold text-lg tracking-tight">India</span>
                         </div>
                     </div>
                     <p class="text-sm leading-relaxed text-gray-400">Your trusted portal for complete information about Indian government schemes (Sarkari Yojana). Check eligibility, benefits and application process.</p>
                 </div>
-                <!-- Quick Links -->
                 <div>
-                    <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h4>
+                    <h4 class="text-white font-semibold mb-4 text-xs uppercase tracking-widest">Quick Links</h4>
                     <ul class="space-y-2.5 text-sm">
-                        <li><a href="{{ route('home') }}" class="hover:text-white transition">Home</a></li>
-                        <li><a href="{{ route('schemes.index') }}" class="hover:text-white transition">All Schemes</a></li>
-                        <li><a href="{{ route('schemes.latest') }}" class="hover:text-white transition">Latest Updates</a></li>
-                        <li><a href="{{ route('pdfs.index') }}" class="hover:text-white transition">Downloads</a></li>
-                        <li><a href="{{ route('search') }}" class="hover:text-white transition">Search</a></li>
+                        <li><a href="{{ route('home') }}" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="{{ route('schemes.index') }}" class="hover:text-white transition-colors">All Schemes</a></li>
+                        <li><a href="{{ route('articles.index') }}" class="hover:text-white transition-colors">Articles</a></li>
+                        <li><a href="{{ route('schemes.latest') }}" class="hover:text-white transition-colors">Latest Updates</a></li>
+                        <li><a href="{{ route('pdfs.index') }}" class="hover:text-white transition-colors">Downloads</a></li>
+                        <li><a href="{{ route('search') }}" class="hover:text-white transition-colors">Search</a></li>
                     </ul>
                 </div>
-                <!-- Categories -->
                 <div>
-                    <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Categories</h4>
+                    <h4 class="text-white font-semibold mb-4 text-xs uppercase tracking-widest">Categories</h4>
                     <ul class="space-y-2.5 text-sm">
                         @foreach(\App\Models\Category::orderBy('sort_order')->take(6)->get() as $cat)
-                        <li><a href="{{ route('categories.show', $cat) }}" class="hover:text-white transition">{{ $cat->icon }} {{ $cat->name }}</a></li>
+                        <li><a href="{{ route('categories.show', $cat) }}" class="hover:text-white transition-colors">{{ $cat->icon }} {{ $cat->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>
-                <!-- Legal -->
                 <div>
-                    <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Legal</h4>
+                    <h4 class="text-white font-semibold mb-4 text-xs uppercase tracking-widest">Legal</h4>
                     <ul class="space-y-2.5 text-sm">
-                        <li><a href="{{ route('pages.about') }}" class="hover:text-white transition">About Us</a></li>
-                        <li><a href="{{ route('pages.contact') }}" class="hover:text-white transition">Contact</a></li>
-                        <li><a href="{{ route('pages.privacy') }}" class="hover:text-white transition">Privacy Policy</a></li>
-                        <li><a href="{{ route('pages.disclaimer') }}" class="hover:text-white transition">Disclaimer</a></li>
-                        <li><a href="{{ route('pages.terms') }}" class="hover:text-white transition">Terms & Conditions</a></li>
+                        <li><a href="{{ route('pages.about') }}" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="{{ route('pages.contact') }}" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="{{ route('pages.privacy') }}" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="{{ route('pages.disclaimer') }}" class="hover:text-white transition-colors">Disclaimer</a></li>
+                        <li><a href="{{ route('pages.terms') }}" class="hover:text-white transition-colors">Terms & Conditions</a></li>
                     </ul>
                 </div>
             </div>
 
-            <!-- AdSense Footer -->
             @if(\App\Models\Setting::get('adsense_enabled') && \App\Models\Setting::get('adsense_footer_slot'))
             <div class="my-6 text-center">
                 <ins class="adsbygoogle" style="display:block" data-ad-client="{{ \App\Models\Setting::get('adsense_publisher_id') }}" data-ad-slot="{{ \App\Models\Setting::get('adsense_footer_slot') }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -315,35 +378,52 @@
             </div>
             @endif
 
-            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm">
-                <p class="text-white">&copy; {{ date('Y') }} UmangIndia.com. All rights reserved.</p>
-                <div class="mt-3 p-3 rounded-lg bg-white/5 border border-white/10 max-w-2xl mx-auto">
-                    <p class="text-gray-300 text-xs leading-relaxed"><strong class="text-white">Disclaimer:</strong> UmangIndia is an independent, privately-run information portal. It is NOT affiliated with, endorsed by, or connected to the Government of India, UMANG (umang.gov.in), or any state government. For official information, please visit <a href="https://www.india.gov.in" class="text-saffron-400 hover:underline" target="_blank" rel="noopener noreferrer">india.gov.in</a> or the respective government department.</p>
+            <div class="border-t border-gray-700/50 mt-8 pt-6 text-center text-sm">
+                <p class="text-white/90">&copy; {{ date('Y') }} UmangIndia.com. All rights reserved.</p>
+                <div class="mt-4 p-4 rounded-xl bg-white/5 border border-white/10 max-w-3xl mx-auto">
+                    <p class="text-gray-300 text-xs leading-relaxed"><strong class="text-white">Disclaimer:</strong> UmangIndia is an independent, privately-run information portal. It is NOT affiliated with, endorsed by, or connected to the Government of India, UMANG (umang.gov.in), or any state government. For official information, please visit <a href="https://www.india.gov.in" class="text-amber-400 hover:underline" target="_blank" rel="noopener noreferrer">india.gov.in</a> or the respective government department.</p>
                 </div>
                 <div class="mt-4 h-1 rounded-full overflow-hidden max-w-xs mx-auto" style="background: linear-gradient(90deg, #0b4ea2 0%, #0b4ea2 50%, #f58220 50%, #f58220 100%);"></div>
             </div>
         </div>
     </footer>
 
-    <script>
-        const btn = document.getElementById('mobile-menu-btn');
-        const menu = document.getElementById('mobile-menu');
-        if (btn && menu) {
-            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-        }
-    </script>
-
-    <!-- Back to Top Button -->
     <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 invisible z-50">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
     </button>
+
+    @if($manifestExists)
+        @vite('resources/js/app.js')
+    @endif
+
     <script>
-    window.addEventListener('scroll', function() {
-        var btn = document.getElementById('back-to-top');
-        if (window.scrollY > 500) { btn.classList.remove('opacity-0','invisible'); btn.classList.add('opacity-100','visible'); }
-        else { btn.classList.add('opacity-0','invisible'); btn.classList.remove('opacity-100','visible'); }
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.getElementById('mobile-menu-btn');
+        var menu = document.getElementById('mobile-menu');
+        if (btn && menu) {
+            btn.addEventListener('click', function() {
+                menu.classList.toggle('open');
+                btn.classList.toggle('active');
+            });
+        }
+        window.addEventListener('scroll', function() {
+            var t = document.getElementById('back-to-top');
+            if (t) {
+                if (window.scrollY > 500) { t.classList.remove('opacity-0','invisible'); t.classList.add('opacity-100','visible'); }
+                else { t.classList.add('opacity-0','invisible'); t.classList.remove('opacity-100','visible'); }
+            }
+        });
     });
+    function toggleMobileCategories(btn) {
+        var el = document.getElementById('mobile-categories');
+        var icon = btn.querySelector('svg');
+        if (el) {
+            el.classList.toggle('collapsed');
+            if (icon) icon.style.transform = el.classList.contains('collapsed') ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+    }
     </script>
+
     @stack('scripts')
 </body>
 </html>

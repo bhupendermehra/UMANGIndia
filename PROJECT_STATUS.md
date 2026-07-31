@@ -55,3 +55,51 @@ Re-apply to Google AdSense after fixing "Low value content" rejection.
 - **UmangIndia project**: `C:\Users\Anudip\Documents\umangindia`
 - **Trading bot**: `C:\Users\Anudip\Documents\my-trading-bot` (venv at `venv\Scripts\python.exe`)
 - **Local DB**: SQLite `database/database.sqlite`
+
+---
+
+## UIMANGINDIA UI OVERHAUL ROADMAP (agreed Jul 31)
+
+> Goal: make umangindia.com look premium + modern while PRESERVING what works.
+> Rule (from Bhupender): improve incrementally, never redesign existing pages
+> without asking. Don't touch AdSense/Analytics/integrations. Test locally first,
+> deploy to Hostinger only after everything passes.
+
+### Phase A — Audit & baseline (before touching anything)
+- [ ] Screenshot + review current home, article show, category, state, admin pages
+- [ ] List what's working (keep), what's broken (fix), what's dated (improve)
+- [ ] Verify current SEO meta, AdSense code, Analytics tags are all intact
+
+### Phase B — Article pages (highest priority, currently "very poor")
+- [ ] Redesign article show: proper hero (category chip, title, date, reading time),
+      TOC for long articles, better prose typography, related-article cards,
+      sticky share bar, FAQ accordion polish, author box, prev/next nav
+- [ ] Article index: card grid with category filters instead of plain list
+- [ ] Keep ALL existing JSON-LD (Article/FAQ/Breadcrumb) and SEO meta intact
+
+### Phase C — Global UI polish
+- [ ] Layout: sticky header, better nav (mega-menu or clean dropdown), footer upgrade
+- [ ] Home: modern hero, category cards, featured schemes carousel, trust signals
+- [ ] Category/State pages: card grid + filters + breadcrumbs
+- [ ] Search, compare, eligibility, calendar pages: consistent card styling
+- [ ] Consistent primary color (existing #0B4EA2 blue) + premium spacing/typography
+
+### Phase D — Admin panel improvement
+- [ ] Dashboard: better stat cards, quick actions, recent activity feed
+- [ ] Tables: search/filter/sort, bulk actions, status badges
+- [ ] Forms: validation UX, autosave, preview buttons
+- [ ] Keep admin auth + role checks intact
+
+### Phase E — Test locally, then deploy
+- [ ] Full local test: every route 200, no broken JS/CSS, SEO meta intact
+- [ ] Verify AdSense + Analytics still present on live after deploy
+- [ ] Deploy to Hostinger (git or rsync), verify 3+ live URLs read actual content
+- [ ] Post-deploy: Screaming Frog crawl before AdSense reapply
+
+### Never break
+- AdSense code, Analytics, existing main links, SEO meta/JSON-LD, admin auth.
+- Never redesign a page without asking — incremental improvement only.
+
+### Tools
+- Codex/OpenCode for heavy multi-file edits (verify via git diff after),
+  terminal for local serve + tests, browser for visual verification.

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Articles - UmangIndia')
-@section('meta_description', 'Latest updates and informative articles about government schemes')
+@section('title', 'Articles & Updates - UmangIndia')
+@section('meta_description', 'Stay informed with the latest news, in-depth guides, and updates about Indian government schemes — Sarkari Yojana articles, eligibility, benefits, and application processes.')
 
 @section('content')
 <div class="py-6">
@@ -37,7 +37,7 @@
         </div>
 
         <div class="mt-6 flex justify-center">
-            {!! $articles->links() !!}
+            {{ $articles->onEachSide(2)->links() }}
         </div>
     @else
         <div class="text-center py-12">

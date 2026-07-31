@@ -21,6 +21,7 @@ class Article extends Model
         'published_at' => 'datetime',
         'is_featured' => 'boolean',
         'view_count' => 'integer',
+        'faqs' => 'array',
     ];
 
     public function scopePublished($query)

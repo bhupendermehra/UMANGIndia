@@ -93,33 +93,45 @@ $schemaData = [
             </div>
 
             <div id="tab-overview" class="tab-panel content-prose prose max-w-none">
-                {!! $scheme->content !!}
+                @php
+                    // Remove content-body H2s that duplicate tab panel headings
+                    // The tabs already provide these with scheme-specific titles
+                    $stripPatterns = [
+                        '/<h2>\s*Eligibility[^<]*<\/h2>/i',
+                        '/<h2>\s*Benefits[^<]*<\/h2>/i',
+                        '/<h2>\s*How to (?:Apply|Get|Register)[^<]*<\/h2>/i',
+                        '/<h2>\s*Documents Required[^<]*<\/h2>/i',
+                        '/<h2>\s*Coverage[^<]*<\/h2>/i',
+                    ];
+                    $cleanContent = preg_replace($stripPatterns, '', $scheme->content);
+                @endphp
+                {!! $cleanContent !!}
             </div>
 
             @if($scheme->eligibility)
             <div id="tab-eligibility" class="tab-panel hidden content-prose prose max-w-none">
-                <h2>Eligibility Criteria</h2>
+                <h2>Eligibility Criteria for {{ $scheme->title }}</h2>
                 <p>{!! nl2br(e(str_replace('\n', "\n", $scheme->eligibility))) !!}</p>
             </div>
             @endif
 
             @if($scheme->benefits)
             <div id="tab-benefits" class="tab-panel hidden content-prose prose max-w-none">
-                <h2>Benefits</h2>
+                <h2>Benefits of {{ $scheme->title }}</h2>
                 <p>{!! nl2br(e(str_replace('\n', "\n", $scheme->benefits))) !!}</p>
             </div>
             @endif
 
             @if($scheme->application_process)
             <div id="tab-process" class="tab-panel hidden content-prose prose max-w-none">
-                <h2>How to Apply</h2>
+                <h2>How to Apply for {{ $scheme->title }}</h2>
                 <p>{!! nl2br(e(str_replace('\n', "\n", $scheme->application_process))) !!}</p>
             </div>
             @endif
 
             @if($scheme->required_documents)
             <div id="tab-documents" class="tab-panel hidden content-prose prose max-w-none">
-                <h2>Required Documents</h2>
+                <h2>Documents Required for {{ $scheme->title }}</h2>
                 <p>{!! nl2br(e(str_replace('\n', "\n", $scheme->required_documents))) !!}</p>
             </div>
             @endif
