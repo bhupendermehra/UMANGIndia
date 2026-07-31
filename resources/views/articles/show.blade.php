@@ -124,6 +124,15 @@
             @endif
         </article>
 
+        {{-- Author box --}}
+        <div class="mt-8 flex items-center gap-4 surface-card p-5 rounded-2xl">
+            <div class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg shrink-0">U</div>
+            <div>
+                <p class="text-sm font-bold text-slate-800">UmangIndia Editorial Team</p>
+                <p class="text-xs text-slate-500 mt-0.5">Independent research on government schemes. Updated {{ $article->updated_at?->format('M d, Y') ?? 'recently' }}.</p>
+            </div>
+        </div>
+
         @if($faqs && count($faqs))
         <div class="mt-10">
             <h2 class="text-2xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>

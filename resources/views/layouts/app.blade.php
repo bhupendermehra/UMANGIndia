@@ -146,11 +146,11 @@
 <body class="app-shell min-h-screen flex flex-col text-slate-800 antialiased" style="font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;">
 
     @if($announcement)
-    <div id="announcement-bar" class="bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2.5 px-4 relative text-sm">
+    <div id="announcement-bar" class="bg-[#083b7a] text-blue-50 py-2.5 px-4 relative text-sm">
         <div class="max-w-7xl mx-auto flex items-center justify-center gap-3">
-            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+            <svg class="w-4 h-4 shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
             <span>{{ $announcement }}</span>
-            <button onclick="document.getElementById('announcement-bar').remove()" class="hover:bg-white/20 rounded p-2 ml-2">
+            <button onclick="document.getElementById('announcement-bar').remove()" class="hover:bg-white/10 rounded p-2 ml-2 text-blue-200">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
@@ -321,7 +321,7 @@
             <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
                 @csrf
                 <input type="email" name="email" required placeholder="Enter your email address" class="flex-1 px-4 py-3 rounded-xl text-sm border-0 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-slate-400">
-                <button type="submit" class="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl transition-colors text-sm whitespace-nowrap">Subscribe</button>
+                <button type="submit" class="px-6 py-3 bg-white text-blue-700 hover:bg-blue-50 font-semibold rounded-xl transition-colors text-sm whitespace-nowrap shadow-sm">Subscribe</button>
             </form>
             <p class="text-blue-300/60 text-xs mt-3">No spam. Unsubscribe anytime.</p>
         </div>

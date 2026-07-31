@@ -205,10 +205,6 @@ $siteSchema = [
 </div>
 @endif
 
-<section class="surface-card p-6 md:p-8 mb-6">
-    <x-newsletter-signup />
-</section>
-
 <section class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-slate-200 mt-10" id="trust-section">
     <div class="text-center mb-8">
         <h2 class="text-2xl font-bold text-slate-900">Why Use UmangIndia</h2>

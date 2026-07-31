@@ -38,7 +38,8 @@
         @if ($articles->isNotEmpty())
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($articles as $article)
-                    <a href="{{ route('articles.show', $article) }}" class="group surface-card card-hover overflow-hidden rounded-2xl border border-slate-200 bg-white flex flex-col focus-ring">
+                    <a href="{{ route('articles.show', $article) }}" class="group surface-card card-hover overflow-hidden rounded-2xl border border-slate-200 bg-white flex flex-col focus-ring hover:border-blue-600">
+                        <div class="h-1 bg-gradient-to-r from-blue-600 to-blue-400"></div>
                         <div class="p-6 flex flex-col flex-1">
                             <div class="flex items-center gap-2 mb-3 flex-wrap">
                                 <span class="text-xs text-slate-500">{{ $article->published_at?->format('M d, Y') ?? 'Recent' }}</span>
@@ -76,9 +77,5 @@
             </div>
         @endif
     </div>
-</div>
-
-<div class="max-w-4xl mx-auto px-4 mb-8">
-    <x-newsletter-signup />
 </div>
 @endsection

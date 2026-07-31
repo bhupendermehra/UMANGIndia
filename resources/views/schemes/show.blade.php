@@ -97,11 +97,13 @@ $schemaData = [
                     // Remove content-body H2s that duplicate tab panel headings
                     // The tabs already provide these with scheme-specific titles
                     $stripPatterns = [
+                        '/<h2>\s*Overview[^<]*<\/h2>/i',
                         '/<h2>\s*Eligibility[^<]*<\/h2>/i',
                         '/<h2>\s*Benefits[^<]*<\/h2>/i',
                         '/<h2>\s*How to (?:Apply|Get|Register)[^<]*<\/h2>/i',
-                        '/<h2>\s*Documents Required[^<]*<\/h2>/i',
+                        '/<h2>\s*(?:Required )?Documents[^<]*<\/h2>/i',
                         '/<h2>\s*Coverage[^<]*<\/h2>/i',
+                        '/<h2>\s*Important Links[^<]*<\/h2>/i',
                     ];
                     $cleanContent = preg_replace($stripPatterns, '', $scheme->content);
                 @endphp
@@ -307,7 +309,6 @@ $schemaData = [
         @endpush
 
         <section class="surface-card p-6 md:p-8">
-            <h3 class="font-semibold mb-3 text-slate-800">📬 Get Updates</h3>
             <x-newsletter-signup />
         </section>
     </article>
@@ -353,7 +354,7 @@ function trackShare(type, id, platform) {
             <h3 class="font-bold mb-3 section-title">Related Schemes</h3>
             <div class="space-y-3">
                 @foreach($relatedSchemes as $related)
-                <a href="{{ route('schemes.show', $related) }}" class="block p-3 rounded-xl hover:bg-[#eef4fb] border border-slate-200 hover:border-blue-600 transition focus-ring">
+                <a href="{{ route('schemes.show', $related) }}" class="block p-3 rounded-xl bg-white shadow-sm hover:shadow-md border border-slate-200 hover:border-blue-600 transition focus-ring">
                     <h4 class="text-sm font-semibold text-slate-800 hover:text-blue-600">{{ $related->title }}</h4>
                     <p class="text-xs muted mt-1 line-clamp-2">{{ $related->short_description }}</p>
                 </a>
