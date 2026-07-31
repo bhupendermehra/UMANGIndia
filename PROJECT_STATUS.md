@@ -127,3 +127,41 @@ Re-apply to Google AdSense after fixing "Low value content" rejection.
 
 ### AdSense timeline (answer for Bhupender)
 - Apply ~Aug 25-31 (3-4 weeks): after remaining ~199 schemes expanded, full Screaming Frog crawl, privacy/contact verified. Realistic approval window: 2-8 weeks after application.
+
+
+## SESSION SAVE — Jul 31 night final (next session START HERE)
+
+### Where things stand (all committed, local only — NOT deployed)
+- Phase A audit DONE. Phase C article redesign DONE (index+show+TOC+meta bug).
+  Phase B content: 36/235 thin schemes expanded (ids 7-45). 199 thin remain.
+- Progress tracker LIVE: http://127.0.0.1:8000/progress/ (HTML + progress.json, overall 18%).
+- Vite build GREEN (manifest + app.css/js generated, all 7 routes 200).
+- Local server: php artisan serve --host=127.0.0.1 --port=8000.
+
+### NEXT SESSION — strict priority
+1. **Phase B continue (the AdSense blocker):** expand remaining 199 thin schemes.
+   Pipeline: read public/progress/thin_schemes.json → write expanded JSON to
+   public/progress/expanded/batch_N.json → php scripts/apply_expanded_content.php
+   → verify thin count drops. Content format: <h2>Overview/Eligibility Criteria/
+   Benefits/How to Apply/Required Documents</h2>, real accurate info, NO invented
+   amounts ('as per the official portal' when unsure), official_website only when
+   confident, meta_title 55-65 chars, meta_description 140-160 chars.
+   Done ids so far: 7-45 (36 schemes). Remaining: 46+ / 199 thin.
+2. Phase D: secondary pages (compare/eligibility/calendar/downloads) — ALREADY
+   consistent, light touch only. Verify render, don't redesign.
+3. Phase E: admin panel improvement (dashboard stats, tables, forms).
+4. Phase F: cleanup — remove empty pages, merge duplicates, fix 153 missing
+   official links, broken external link check.
+5. Phase G: full local test → deploy Hostinger (verify live).
+
+### AdSense timeline (told to Bhupender)
+Apply ~Aug 25-31 (after 199 remaining schemes + clean Screaming Frog crawl).
+Approval 2-8 wks → first ads late Sept-mid Oct.
+
+### Blocker / notes
+- Subagents (content expansion) FAIL: Gemini free-tier quota = 0 (HTTP 429, hard).
+  Workaround: main agent writes content directly. Retry delegation in fresh
+  session IF quota resets, else continue manually (works, just slower).
+- Never run npm run build blindly after blade-only changes — verify routes after.
+  Build currently GREEN.
+- Live site untouched. AdSense/GA/JSON-LD intact locally.
