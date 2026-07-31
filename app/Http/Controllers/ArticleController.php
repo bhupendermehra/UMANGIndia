@@ -11,6 +11,10 @@ class ArticleController extends Controller
     {
         $query = Article::published()->latest('published_at');
 
+        if ($request->query('filter') === 'featured') {
+            $query->where('is_featured', true);
+        }
+
         $articles = $query->paginate(10);
 
         return view('articles.index', compact('articles'));

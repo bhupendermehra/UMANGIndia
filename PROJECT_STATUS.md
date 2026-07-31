@@ -103,3 +103,27 @@ Re-apply to Google AdSense after fixing "Low value content" rejection.
 ### Tools
 - Codex/OpenCode for heavy multi-file edits (verify via git diff after),
   terminal for local serve + tests, browser for visual verification.
+
+---
+
+## SESSION — Jul 31 night (UmangIndia overhaul started)
+
+### Done
+- **Audit (Phase A complete):** 259 schemes / 16 articles / 12 cats / 37 states. All routes 200. AdSense + GA + JSON-LD intact. **Found: 235 schemes thin content (<800 chars), 174 <150 chars — THE AdSense blocker.** 153 missing official links.
+- **Progress tracker:** http://127.0.0.1:8000/progress/ (visual HTML + JSON state, auto-updates).
+- **Article pages redesigned (Phase C):** index = hero, Latest/Featured filter, reading-time cards, premium empty state; show = TOC auto-build, prev/next nav, related cards with excerpts, rounded share pills, FAQ chevron polish. Fixed meta_description @section mismatch bug. All @@ JSON-LD preserved.
+- **Content expansion started (Phase B):** 36 high-traffic schemes expanded (ids 7-45: PM Kisan cluster, JSY, Stand-Up India, PMRY, APY, NPS, PMGKAY, PMUY, SSY, BBBP, PMMVY, Digital India, SBM, PM-KUSUM, PMVVY, scholarships, Agniveer, SSC/UPSC). 235 → 199 thin. Apply pipeline: scripts/dump_thin_schemes.php + apply_expanded_content.php + public/progress/expanded/batch_*.json.
+- **Home/scheme pages:** already strong — no redesign (per UI rule). Scheme show has tabs + sidebar; verified new content renders.
+
+### Delegation blocker
+- Subagents (content expansion) FAILED — provider fallback hit Gemini HTTP 429 quota (3 retries). Content written directly by main agent instead. Retry subagents tomorrow if quota resets, or continue manually.
+
+### Next session (priority order)
+1. Continue Phase B: expand remaining 199 thin schemes (use same batch pipeline; batches are id-ranges from thin_schemes.json).
+2. Phase D: compare/eligibility/calendar/downloads pages consistency check + polish.
+3. Phase E: admin panel improvements.
+4. Phase F: broken/empty page cleanup + external link check (153 missing official links).
+5. Phase G: full local test → deploy Hostinger.
+
+### AdSense timeline (answer for Bhupender)
+- Apply ~Aug 25-31 (3-4 weeks): after remaining ~199 schemes expanded, full Screaming Frog crawl, privacy/contact verified. Realistic approval window: 2-8 weeks after application.
