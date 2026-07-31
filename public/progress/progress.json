@@ -1,6 +1,6 @@
 {
     "updated": "2026-07-31",
-    "overall": 18,
+    "overall": 34,
     "goal": "Daily visitors via content, AdSense approval, then revenue",
     "adsense_timeline": "Apply ~Aug 25-31 (3-4 wks): after thin-content expansion + clean crawl",
     "phases": [
@@ -10,7 +10,7 @@
             "pct": 100,
             "tasks": [
                 {
-                    "name": "DB\/content audit (259 schemes, 16 articles)",
+                    "name": "DB/content audit (259 schemes, 16 articles)",
                     "done": true
                 },
                 {
@@ -22,7 +22,7 @@
                     "done": true
                 },
                 {
-                    "name": "Identify empty\/thin content",
+                    "name": "Identify empty/thin content",
                     "done": true
                 }
             ]
@@ -30,15 +30,15 @@
         {
             "id": "B",
             "name": "Content depth (AdSense critical)",
-            "pct": 16,
+            "pct": 55,
             "tasks": [
                 {
                     "name": "Expand 174 ultra-thin schemes (<150 chars) to 800+ chars",
-                    "done": false
+                    "done": true
                 },
                 {
                     "name": "Expand 61 medium schemes (150-800 chars)",
-                    "done": false
+                    "done": true
                 },
                 {
                     "name": "Add missing official website links (153 missing)",
@@ -83,15 +83,15 @@
                     "done": false
                 },
                 {
-                    "name": "Category\/State pages: cards + filters + breadcrumbs",
+                    "name": "Category/State pages: cards + filters + breadcrumbs",
                     "done": false
                 },
                 {
-                    "name": "Scheme detail: tabs\/sections polish",
+                    "name": "Scheme detail: tabs/sections polish",
                     "done": false
                 },
                 {
-                    "name": "Search\/compare\/eligibility\/calendar consistent styling",
+                    "name": "Search/compare/eligibility/calendar consistent styling",
                     "done": false
                 }
             ]
@@ -106,7 +106,7 @@
                     "done": false
                 },
                 {
-                    "name": "Tables: search\/filter\/status badges",
+                    "name": "Tables: search/filter/status badges",
                     "done": false
                 },
                 {
@@ -121,7 +121,7 @@
             "pct": 0,
             "tasks": [
                 {
-                    "name": "Remove\/merge empty pages + duplicates",
+                    "name": "Remove/merge empty pages + duplicates",
                     "done": false
                 },
                 {
@@ -129,7 +129,7 @@
                     "done": false
                 },
                 {
-                    "name": "Full local test: all routes 200, no JS\/CSS errors",
+                    "name": "Full local test: all routes 200, no JS/CSS errors",
                     "done": false
                 },
                 {
@@ -148,7 +148,7 @@
                     "done": false
                 },
                 {
-                    "name": "Verify live: 3+ URLs content, AdSense\/GA intact",
+                    "name": "Verify live: 3+ URLs content, AdSense/GA intact",
                     "done": false
                 }
             ]

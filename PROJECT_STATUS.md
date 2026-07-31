@@ -129,7 +129,42 @@ Re-apply to Google AdSense after fixing "Low value content" rejection.
 - Apply ~Aug 25-31 (3-4 weeks): after remaining ~199 schemes expanded, full Screaming Frog crawl, privacy/contact verified. Realistic approval window: 2-8 weeks after application.
 
 
-## SESSION SAVE — Jul 31 night final (next session START HERE)
+## SESSION — Aug 1 (Phase B content expansion COMPLETE)
+
+### Done (local only, NOT deployed)
+- **All 235 thin schemes expanded (235 → 0).** Batches 4-12 written directly by main
+  agent (delegation still blocked by Gemini quota): batch_4 (46-65, health/education),
+  batch_5 (66-85, agriculture, id-shift caught before apply), batch_6 (86-105,
+  employment/social-welfare), batch_7 (106-125, social-welfare/women-child),
+  batch_8 (126-145, financial-inclusion/digital-india), batch_9 (146-165,
+  digital-india/infrastructure), batch_10 (166-185, environment/senior-citizen),
+  batch_11 (186-200, national tail), batch_12 (205-288, state schemes — appended
+  Eligibility + How to Apply to existing partial content, built by script).
+- Every batch verified: id→title cross-check against schemes table + HTML tag balance
+  BEFORE apply (batch_5 was off-by-one: id 66 was Free Drugs Service Initiative, not
+  PM Kisan Maandhan — caught and remapped).
+- All ids 7-288 covered. official_website added to most national schemes.
+- Progress tracker: overall 18% → 34%, Phase B 16% → 55% (2/5 tasks done).
+- Verified live rendering: 10+ scheme URLs 200, new H2 sections (Overview/Eligibility/
+  How to Apply) present in body.
+
+### Next session (priority order)
+1. Phase B remaining tasks: 153 missing official links (partially fixed — audit
+   remaining), publish 10+ new SEO articles, FAQ/eligibility blocks on top schemes.
+2. Phase D: secondary pages (compare/eligibility/calendar/downloads) — light touch.
+3. Phase E: admin panel improvement.
+4. Phase F: cleanup — duplicates (e.g. NCPCR 109/115, PMVVY 131/176, RVY 106/177),
+   broken external links.
+5. Phase G: full local test → deploy Hostinger (verify live content).
+
+### AdSense timeline
+Apply ~Aug 25-31 (after remaining Phase B tasks + clean Screaming Frog crawl).
+Approval 2-8 wks → first ads late Sept-mid Oct.
+
+### Blockers / notes
+- Subagents still fail (Gemini quota). Main-agent content writing works fine.
+- Server still up on 127.0.0.1:8000, progress tracker 200.
+
 
 ### Where things stand (all committed, local only — NOT deployed)
 - Phase A audit DONE. Phase C article redesign DONE (index+show+TOC+meta bug).
