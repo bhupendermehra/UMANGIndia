@@ -200,3 +200,47 @@ Approval 2-8 wks → first ads late Sept-mid Oct.
 - Never run npm run build blindly after blade-only changes — verify routes after.
   Build currently GREEN.
 - Live site untouched. AdSense/GA/JSON-LD intact locally.
+
+## SESSION — Aug 1 (UI polish pass + session save)
+
+### Done (local only, NOT deployed)
+- **Phase B content expansion COMPLETE (commit 351fc63):** 235 thin schemes → 0.
+  Batches 4-12 (ids 46-288): national schemes fully written, state schemes got
+  Eligibility + How to Apply appended. All id→title cross-checked before apply
+  (caught batch_5 off-by-one). official_website 257/259, meta_title 259/259.
+- **UI polish pass (commit 2f6337a):**
+  - Scheme content typography fixed: `.content-prose` in resources/css/app.css
+    (h2/h3/p/ul/ol styles — lists now show bullets, headings sized). Root cause:
+    NO @tailwindcss/typography plugin, `.prose` classes were dead.
+  - Announcement bar: orange → navy (#083b7a), removes the orange/blue clash.
+  - Scheme show: stripped Overview/Required Documents/Important Links H2s that
+    duplicated tabs; removed duplicate "Get Updates" heading (single subscribe);
+    related-scheme cards now white with shadow.
+  - Article index: cards match scheme-card style (top blue bar, hover border);
+    removed duplicate newsletter form at bottom.
+  - Article show: author box added (UmangIndia Editorial Team + updated date).
+  - Home: removed duplicate newsletter section (was between adsense + trust).
+  - Newsletter CTA button: amber → white-on-blue (footer section).
+- Verified: npm run build green, php artisan view:cache clean, routes 200
+  (/, /articles, /yojana/*, /category/*, /state/*, /article/*).
+- NOTE: vision tools broken this session (DeepSeek no image support) — used
+  scripts/analyze_ui.py (OpenRouter gpt-4o-mini) on screenshots instead.
+  Permanent fix set in hermes config: auxiliary.vision.provider=google.
+
+### Next session (priority order)
+1. Phase B remaining: publish 10+ new SEO articles (roadmap), FAQ blocks on top
+   schemes, audit remaining 153→~2 missing official links.
+2. Phase D: secondary pages (compare/eligibility/calendar/downloads) — light touch.
+3. Phase E: admin panel improvement (dashboard stats, tables, forms).
+4. Phase F: cleanup — duplicates (NCPCR 109/115, PMVVY 131/176, RVY 106/177),
+   broken external links, getMetaTitle() bug.
+5. Phase G: full local test → deploy Hostinger (verify live content + AdSense/GA).
+
+### AdSense timeline
+Apply ~Aug 25-31 (after remaining Phase B tasks + clean Screaming Frog crawl).
+Approval 2-8 wks → first ads late Sept-mid Oct.
+
+### Blockers / notes
+- Subagents still fail (Gemini quota). Main-agent content writing works fine.
+- Local server up on 127.0.0.1:8000, progress tracker /progress/ 200.
+- Vision: `hermes config set auxiliary.vision.provider google` (needs new session).
