@@ -239,3 +239,6 @@ body {
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
 #mobile-categories.collapsed { display: none; }
+
+/* Sticky-header offset for anchor jumps (TOC, FAQ, in-page links) */
+[id] { scroll-margin-top: 90px; }
