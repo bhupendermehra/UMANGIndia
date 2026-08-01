@@ -244,3 +244,42 @@ Approval 2-8 wks → first ads late Sept-mid Oct.
 - Subagents still fail (Gemini quota). Main-agent content writing works fine.
 - Local server up on 127.0.0.1:8000, progress tracker /progress/ 200.
 - Vision: `hermes config set auxiliary.vision.provider google` (needs new session).
+
+## SESSION — Aug 1 afternoon (SEO agent fix + Phase B/F push)
+
+### SEO agent (DONE — was dead, now running)
+- Runner was DEAD since Jul 31 15:21 (last pipeline log Jul 29). Missed Jul 31 + Aug 1
+  03:00/06:30 UTC runs → no Telegram messages (user reported).
+- Root cause: `.bash_profile` used `nohup ... &` — Hostinger kills it on SSH session
+  close. Replaced with python3 `subprocess.Popen(start_new_session=True)` detach
+  (scripts/seo_launch.py, seo_manual_run.py + bash_profile_remote).
+- Relaunched runner PID 1549197, verified alive across reconnect. Schedules
+  03:00/06:30/10:30/14:00 UTC. Manual pipeline run fired detached (816-page crawl,
+  sends Telegram report on completion).
+
+### UmangIndia (local only, NOT deployed)
+- **10 new SEO articles published (16 → 26)**: PM Kisan 19th instalment status,
+  KCC online apply, PM Ujjwala, APY vs NPS, PMAY beneficiary list, Mudra loan,
+  PMJDY zero-balance, PMFBY claim, SSY account, PM-KUSUM. All have meta_title,
+  meta_description, focus_keyword, excerpt, 3-FAQ JSON (FAQPage schema verified
+  live on all 10).
+- **BROKEN FOUND + FIXED**: `faqs` was NOT in Article $fillable AND the `faqs`
+  column never existed in articles migration (model+blade expected it; old
+  articles silently had no FAQPage schema). Added migration
+  `2026_08_01_090137_add_faqs_to_articles_table.php`, added 'faqs' to fillable,
+  backfilled all 10 (scripts/publish_articles_2026_08.php, idempotent).
+- **Official links 2 → 0 missing**: id 198 PMGSY → pmgsy.nic.in, id 199 NEP →
+  education.gov.in.
+- **Duplicates merged 259 → 256**: NCPCR 109/115 (kept 109), PMVVY 131/176 (kept
+  131), RVY 106/177 (kept 106). No orphaned scheme_updates.
+- **getMetaTitle() bug RESOLVED**: root cause was empty meta_title → fallback
+  title. All 256 now have custom meta_title; verified `<title>` renders DB value.
+- Phase D: /compare, /check-eligibility, /calendar, /downloads all 200 (no
+  redesign, per UI rule).
+
+### Next session
+1. Phase E: admin panel improvement (dashboard stats, tables, forms).
+2. Phase G: deploy to Hostinger — NOTE: local SQLite is gitignored, live is
+   MySQL. Content/scheme changes need SQL export (pattern: scripts/*.sql) +
+   blade/template changes via git pull. Verify 3+ live URLs AFTER deploy.
+3. Full Screaming Frog crawl before AdSense reapply.
