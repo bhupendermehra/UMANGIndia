@@ -1,0 +1,26 @@
+# Fix both relaunches to use the robust python3 Popen(start_new_session=True) detach.
+# nohup+& dies on SSH session close on Hostinger; Popen start_new_session survives.
+
+_launch() {
+  # $1 = workdir, $2 = runner script path
+  python3 - "$1" "$2" <<'PYEOF'
+import subprocess, sys
+workdir, runner = sys.argv[1], sys.argv[2]
+subprocess.Popen(
+    ['bash', runner],
+    cwd=workdir,
+    stdin=subprocess.DEVNULL,
+    stdout=open(workdir + '/logs/launcher.out', 'a'),
+    stderr=subprocess.STDOUT,
+    start_new_session=True,
+)
+PYEOF
+}
+
+if ! pgrep -f '[r]unner.sh' > /dev/null 2>&1; then
+  _launch "$HOME/trading_bot" "$HOME/trading_bot/scripts/runner.sh"
+fi
+
+if ! pgrep -f '[s]eo-agent/runner.sh' > /dev/null 2>&1; then
+  _launch "$HOME/seo-agent" "$HOME/seo-agent/runner.sh"
+fi

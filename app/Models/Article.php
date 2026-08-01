@@ -14,7 +14,7 @@ class Article extends Model
         'excerpt', 'excerpt_hi', 'source_url', 'status',
         'is_featured', 'published_at',
         'meta_title', 'meta_description', 'focus_keyword',
-        'featured_image', 'view_count'
+        'featured_image', 'view_count', 'faqs'
     ];
 
     protected $casts = [
