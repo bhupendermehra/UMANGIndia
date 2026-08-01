@@ -17,7 +17,9 @@ class ArticleController extends Controller
 
         $articles = $query->paginate(10);
 
-        return view('articles.index', compact('articles'));
+        $popularArticles = Article::published()->orderByDesc('view_count')->take(5)->get();
+
+        return view('articles.index', compact('articles', 'popularArticles'));
     }
 
     public function show(Article $article)
@@ -26,6 +28,8 @@ class ArticleController extends Controller
             abort(404);
         }
 
-        return view('articles.show', compact('article'));
+        $popularArticles = Article::published()->where('id', '!=', $article->id)->orderByDesc('view_count')->take(5)->get();
+
+        return view('articles.show', compact('article', 'popularArticles'));
     }
 }

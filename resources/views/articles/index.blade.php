@@ -35,6 +35,8 @@
             </div>
         </div>
 
+        <div class="grid gap-8 lg:grid-cols-3">
+            <div class="lg:col-span-2">
         @if ($articles->isNotEmpty())
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($articles as $article)
@@ -76,6 +78,12 @@
                 <p class="text-slate-500 text-sm mt-1">Check back soon — we're adding new guides every week.</p>
             </div>
         @endif
+            </div>
+
+            <div class="lg:col-span-1">
+                <x-article-sidebar :popularArticles="$popularArticles" />
+            </div>
+        </div>
     </div>
 </div>
 @endsection

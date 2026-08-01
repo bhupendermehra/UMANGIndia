@@ -64,7 +64,9 @@
 
 @section('content')
 <div class="py-8">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="grid gap-8 lg:grid-cols-3">
+        <div class="lg:col-span-2 max-w-3xl mx-auto lg:mx-0 w-full">
         {{-- Breadcrumb --}}
         <nav class="flex items-center gap-2 text-sm text-slate-500 mb-6" aria-label="Breadcrumb">
             <a href="{{ route('home') }}" class="hover:text-blue-600 transition">Home</a>
@@ -226,6 +228,14 @@
 
         <div class="mt-4">
             <a href="{{ route('articles.index') }}" class="text-blue-600 hover:underline inline-flex items-center gap-1 text-sm font-medium"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg> Back to Articles</a>
+        </div>
+        </div>
+
+        <div class="lg:col-span-1">
+            <div class="lg:sticky lg:top-24">
+                <x-article-sidebar :popularArticles="$popularArticles" />
+            </div>
+        </div>
         </div>
     </div>
 </div>
