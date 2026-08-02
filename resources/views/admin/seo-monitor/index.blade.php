@@ -33,11 +33,18 @@
     </div>
 </div>
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-    <div class="p-4 border-b border-gray-200">
+    <div class="p-4 border-b border-gray-200 space-y-2">
         <div class="flex items-center gap-2">
-            <a href="{{ route('admin.seo-monitor.index') }}" class="px-3 py-1.5 text-sm rounded {{ !request('status') ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">All</a>
+            <a href="{{ route('admin.seo-monitor.index') }}" class="px-3 py-1.5 text-sm rounded {{ !request('status') && !request('check_type') ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">All</a>
             <a href="{{ route('admin.seo-monitor.index', ['status' => 'fail']) }}" class="px-3 py-1.5 text-sm rounded {{ request('status') == 'fail' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">Failed</a>
             <a href="{{ route('admin.seo-monitor.index', ['status' => 'warning']) }}" class="px-3 py-1.5 text-sm rounded {{ request('status') == 'warning' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">Warnings</a>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+            @foreach(['meta_title', 'meta_description', 'h1', 'canonical', 'broken_link', 'alt_text'] as $type)
+            <a href="{{ route('admin.seo-monitor.index', ['check_type' => $type, 'status' => request('status')]) }}" class="px-3 py-1.5 text-sm rounded {{ request('check_type') == $type ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
+                {{ str_replace('_', ' ', ucfirst($type)) }}
+            </a>
+            @endforeach
         </div>
     </div>
     <div class="overflow-x-auto">
