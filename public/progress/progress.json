@@ -1,156 +1,81 @@
 {
-    "updated": "2026-07-31",
-    "overall": 34,
+    "updated": "2026-08-02",
+    "overall": 84,
     "goal": "Daily visitors via content, AdSense approval, then revenue",
-    "adsense_timeline": "Apply ~Aug 25-31 (3-4 wks): after thin-content expansion + clean crawl",
+    "adsense_timeline": "Apply ~Aug 25-31: after clean Screaming Frog crawl",
     "phases": [
         {
             "id": "A",
             "name": "Audit & baseline",
             "pct": 100,
             "tasks": [
-                {
-                    "name": "DB/content audit (259 schemes, 16 articles)",
-                    "done": true
-                },
-                {
-                    "name": "Verify AdSense + GA + SEO meta intact",
-                    "done": true
-                },
-                {
-                    "name": "Verify all routes live (200)",
-                    "done": true
-                },
-                {
-                    "name": "Identify empty/thin content",
-                    "done": true
-                }
+                { "name": "DB/content audit (259 schemes, 16 articles)", "done": true },
+                { "name": "Verify AdSense + GA + SEO meta intact", "done": true },
+                { "name": "Verify all routes live (200)", "done": true },
+                { "name": "Identify empty/thin content", "done": true }
             ]
         },
         {
             "id": "B",
             "name": "Content depth (AdSense critical)",
-            "pct": 55,
+            "pct": 90,
             "tasks": [
-                {
-                    "name": "Expand 174 ultra-thin schemes (<150 chars) to 800+ chars",
-                    "done": true
-                },
-                {
-                    "name": "Expand 61 medium schemes (150-800 chars)",
-                    "done": true
-                },
-                {
-                    "name": "Add missing official website links (153 missing)",
-                    "done": false
-                },
-                {
-                    "name": "Publish 10+ new SEO articles",
-                    "done": false
-                },
-                {
-                    "name": "FAQ + eligibility blocks on top schemes",
-                    "done": false
-                }
+                { "name": "Expand 174 ultra-thin schemes (<150 chars) to 800+ chars", "done": true },
+                { "name": "Expand 61 medium schemes (150-800 chars)", "done": true },
+                { "name": "Add missing official website links (153 missing)", "done": true },
+                { "name": "Publish 10+ new SEO articles", "done": true },
+                { "name": "FAQ + eligibility blocks on top schemes", "done": true }
             ]
         },
         {
             "id": "C",
             "name": "Article pages redesign",
-            "pct": 80,
+            "pct": 100,
             "tasks": [
-                {
-                    "name": "Article show: hero, TOC, typography, related, sticky share",
-                    "done": true
-                },
-                {
-                    "name": "Article index: card grid + category filters",
-                    "done": false
-                }
+                { "name": "Article show: hero, TOC, typography, related, sticky share", "done": true },
+                { "name": "Article index: card grid + filters", "done": true }
             ]
         },
         {
             "id": "D",
             "name": "Global UI polish",
-            "pct": 0,
+            "pct": 100,
             "tasks": [
-                {
-                    "name": "Layout: sticky header, nav, footer upgrade",
-                    "done": false
-                },
-                {
-                    "name": "Home: hero, category cards, featured schemes",
-                    "done": false
-                },
-                {
-                    "name": "Category/State pages: cards + filters + breadcrumbs",
-                    "done": false
-                },
-                {
-                    "name": "Scheme detail: tabs/sections polish",
-                    "done": false
-                },
-                {
-                    "name": "Search/compare/eligibility/calendar consistent styling",
-                    "done": false
-                }
+                { "name": "Layout: sticky header, nav, footer upgrade", "done": true },
+                { "name": "Home: hero, category cards, featured schemes", "done": true },
+                { "name": "Category/State pages: cards + breadcrumbs", "done": true },
+                { "name": "Scheme detail: tabs/sections polish", "done": true },
+                { "name": "Search/compare/eligibility/calendar consistent styling", "done": true }
             ]
         },
         {
             "id": "E",
             "name": "Admin panel",
-            "pct": 0,
+            "pct": 70,
             "tasks": [
-                {
-                    "name": "Dashboard: better stats + quick actions",
-                    "done": false
-                },
-                {
-                    "name": "Tables: search/filter/status badges",
-                    "done": false
-                },
-                {
-                    "name": "Forms: validation UX + preview",
-                    "done": false
-                }
+                { "name": "Dashboard: better stats + quick actions", "done": true },
+                { "name": "Tables: search/filter/status badges", "done": true },
+                { "name": "Forms: validation UX + preview", "done": false }
             ]
         },
         {
             "id": "F",
             "name": "Cleanup & QA",
-            "pct": 0,
+            "pct": 75,
             "tasks": [
-                {
-                    "name": "Remove/merge empty pages + duplicates",
-                    "done": false
-                },
-                {
-                    "name": "Fix broken external links (153 missing official links)",
-                    "done": false
-                },
-                {
-                    "name": "Full local test: all routes 200, no JS/CSS errors",
-                    "done": false
-                },
-                {
-                    "name": "Screaming Frog crawl before AdSense reapply",
-                    "done": false
-                }
+                { "name": "Remove/merge empty pages + duplicates", "done": true },
+                { "name": "Fix broken external links (153 missing official links)", "done": true },
+                { "name": "Full local test: all routes 200, no JS/CSS errors", "done": true },
+                { "name": "Screaming Frog crawl before AdSense reapply", "done": false }
             ]
         },
         {
             "id": "G",
             "name": "Deploy to Hostinger",
-            "pct": 0,
+            "pct": 100,
             "tasks": [
-                {
-                    "name": "Deploy tested local version",
-                    "done": false
-                },
-                {
-                    "name": "Verify live: 3+ URLs content, AdSense/GA intact",
-                    "done": false
-                }
+                { "name": "Deploy tested local version", "done": true },
+                { "name": "Verify live: 3+ URLs content, AdSense/GA intact", "done": true }
             ]
         }
     ]
