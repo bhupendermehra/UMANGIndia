@@ -1,5 +1,5 @@
 <div class="bg-gradient-to-r from-primary-600 to-primary-500 rounded-lg p-6 text-white">
-    <h3 class="font-bold text-lg mb-2">📬 Get Scheme Updates</h3>
+    <span class="font-bold text-lg mb-2">📬 Get Scheme Updates</span>
     <p class="text-sm text-white/80 mb-4">
         Subscribe to our weekly newsletter and never miss a new government scheme update!
     </p>
