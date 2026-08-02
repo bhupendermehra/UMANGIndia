@@ -410,5 +410,32 @@
     </script>
 
     @stack('scripts')
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-sm z-[100] bg-white border border-slate-200 rounded-2xl shadow-xl p-5 hidden">
+        <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-amber-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+            <div>
+                <p class="text-sm text-slate-700"><strong>We value your privacy</strong></p>
+                <p class="text-xs text-slate-500 mt-1">We use cookies to improve your browsing experience and analyse site traffic. By continuing to use this site, you consent to our use of cookies.</p>
+                <div class="flex gap-2 mt-3">
+                    <button onclick="acceptCookies()" class="px-4 py-1.5 text-xs font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Accept</button>
+                    <a href="{{ route('pages.privacy') }}" class="px-4 py-1.5 text-xs font-medium text-slate-600 hover:text-blue-600 rounded-lg border border-slate-200 transition">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    (function() {
+        if (localStorage.getItem('umang_cookie_consent') === 'accepted') return;
+        var b = document.getElementById('cookie-banner');
+        if (b) { b.classList.remove('hidden'); }
+    })();
+    function acceptCookies() {
+        localStorage.setItem('umang_cookie_consent', 'accepted');
+        var b = document.getElementById('cookie-banner');
+        if (b) b.classList.add('hidden');
+    }
+    </script>
 </body>
 </html>

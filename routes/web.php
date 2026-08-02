@@ -49,6 +49,7 @@ Route::get('/latest', [SchemeController::class, 'latest'])->name('schemes.latest
 // Static pages
 Route::get('/about', [PageController::class, 'about'])->name('pages.about');
 Route::get('/contact', [PageController::class, 'contact'])->name('pages.contact');
+Route::post('/contact', [PageController::class, 'contactSubmit'])->name('pages.contact.submit');
 Route::get('/privacy-policy', [PageController::class, 'privacy'])->name('pages.privacy');
 Route::get('/disclaimer', [PageController::class, 'disclaimer'])->name('pages.disclaimer');
 Route::get('/terms-and-conditions', [PageController::class, 'terms'])->name('pages.terms');
