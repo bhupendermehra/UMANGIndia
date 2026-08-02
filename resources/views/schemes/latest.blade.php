@@ -22,7 +22,7 @@
             <span class="bg-red-50 text-red-600 text-xs px-2.5 py-1 rounded-full font-medium">Closed</span>
             @endif
         </div>
-        <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition">{{ $scheme->title }}</h3>
+        <h2 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition">{{ $scheme->title }}</h2>
         <p class="text-sm text-slate-500 mt-1 line-clamp-2">{{ $scheme->short_description }}</p>
         <p class="text-xs text-slate-400 mt-2">Published: {{ $scheme->published_at?->format('d M Y') }}</p>
     </a>

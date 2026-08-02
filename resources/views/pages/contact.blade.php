@@ -20,20 +20,20 @@
 
             <div class="grid md:grid-cols-2 gap-6 mt-6">
                 <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200">
-                    <h3 class="font-semibold text-blue-600 mb-2">Email</h3>
+                    <h2 class="font-semibold text-blue-600 mb-2">Email</h2>
                     <p class="text-slate-800">contact@umangindia.com</p>
                     <p class="text-xs muted mt-1">We aim to respond within 48 hours</p>
                 </div>
 
                 <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200">
-                    <h3 class="font-semibold text-blue-600 mb-2">Website</h3>
+                    <h2 class="font-semibold text-blue-600 mb-2">Website</h2>
                     <p class="text-slate-800">www.umangindia.com</p>
                     <p class="text-xs muted mt-1">Available 24/7 online</p>
                 </div>
             </div>
 
             <div class="mt-8">
-                <h3 class="font-semibold text-slate-800 mb-4">Send us a message</h3>
+                <h2 class="font-semibold text-slate-800 mb-4">Send us a message</h2>
                 @if(session('contact_success'))
                 <div class="mb-4 p-4 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm">{{ session('contact_success') }}</div>
                 @endif

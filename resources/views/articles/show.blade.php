@@ -112,7 +112,11 @@
             </div>
 
             <div class="article-content prose prose-lg max-w-none text-gray-800">
-                {!! $article->content !!}
+                @php
+                    // Strip FAQ H2s from content body — the FAQ accordion below is canonical
+                    $articleContent = preg_replace('/<h2[^>]*>\s*Frequently Asked Questions[^<]*<\/h2>/i', '', $article->content);
+                @endphp
+                {!! $articleContent !!}
             </div>
 
             @if ($article->content_hi)
@@ -120,7 +124,10 @@
                 <div lang="hi" class="mt-6">
                     <h2 class="mb-4 text-2xl font-bold text-gray-900">{{ $article->title_hi ?? 'हिन्दी में' }}</h2>
                     <div class="article-content prose prose-lg max-w-none text-gray-800">
-                        {!! $article->content_hi !!}
+                        @php
+                            $articleContentHi = preg_replace('/<h2[^>]*>\s*Frequently Asked Questions[^<]*<\/h2>/i', '', $article->content_hi);
+                        @endphp
+                        {!! $articleContentHi !!}
                     </div>
                 </div>
             @endif

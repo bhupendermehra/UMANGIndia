@@ -14,7 +14,7 @@
     <aside id="filter-panel" class="hidden lg:block lg:sticky lg:top-24 self-start">
         <div class="surface-card p-5">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="font-bold section-title">Filters</h3>
+                <span class="font-bold section-title">Filters</span>
                 <a href="{{ route('schemes.index') }}" class="text-xs text-blue-600 hover:underline">Clear all</a>
             </div>
 
@@ -101,7 +101,7 @@
                         </span>
                         @endif
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">{{ $scheme->title }}</h3>
+                    <h2 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">{{ $scheme->title }}</h2>
                     <p class="text-sm text-slate-500 line-clamp-2 leading-relaxed">{{ $scheme->short_description }}</p>
                     <div class="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
                         <div class="flex items-center gap-3 text-xs text-slate-400">

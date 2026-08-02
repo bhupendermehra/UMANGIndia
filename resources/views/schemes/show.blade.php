@@ -104,8 +104,13 @@ $schemaData = [
                         '/<h2>\s*(?:Required )?Documents[^<]*<\/h2>/i',
                         '/<h2>\s*Coverage[^<]*<\/h2>/i',
                         '/<h2>\s*Important Links[^<]*<\/h2>/i',
+                        '/<h2[^>]*>\s*Frequently Asked Questions[^<]*<\/h2>/i',
                     ];
                     $cleanContent = preg_replace($stripPatterns, '', $scheme->content);
+                    // Content sections are top-level within the tab panel — demote h3s to h2
+                    // so heading order is h1 → h2 (tab) → h2 (content sections)
+                    $cleanContent = preg_replace('/<h3([^>]*)>/i', '<h2$1>', $cleanContent);
+                    $cleanContent = preg_replace('/<\/h3>/i', '</h2>', $cleanContent);
                 @endphp
                 {!! $cleanContent !!}
             </div>
