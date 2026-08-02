@@ -91,7 +91,7 @@ class SeoMonitorController extends Controller
             'description' => "SEO check run: " . count($urls) . " URLs, " . count($checks) . " checks ($failed failed, $warned warnings)",
         ]);
 
-        return back()->with('success', "SEO check complete: " . count($urls) . " URLs checked, " . count($checks) . " results (" . $failed . " failed, " . $warned . " warnings).");
+        return redirect()->to(rtrim(config('app.url'), '/') . '/admin/seo-monitor')->with('success', "SEO check complete: " . count($urls) . " URLs checked, " . count($checks) . " results (" . $failed . " failed, " . $warned . " warnings).");
     }
 
     private function sitemapUrls(): array
