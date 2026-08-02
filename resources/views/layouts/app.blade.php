@@ -209,26 +209,11 @@
 
                         <a href="{{ route('articles.index') }}" class="px-3 py-2 text-sm font-medium whitespace-nowrap rounded-lg transition-colors {{ $isActive('articles.*') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-blue-50 hover:text-blue-600' }}">Articles</a>
 
-                        <div class="relative nav-group">
-                            <button class="px-3 py-2 text-sm font-medium whitespace-nowrap rounded-lg transition-colors flex items-center gap-1 {{ $isActive(['calendar.*', 'pdfs.*', 'eligibility.*']) ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-blue-50 hover:text-blue-600' }}">
-                                More
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="nav-dropdown right-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-slate-200 py-2 z-[60]">
-                                <a href="{{ route('calendar.index') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
-                                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                    Calendar
-                                </a>
-                                <a href="{{ route('pdfs.index') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
-                                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                    Downloads
-                                </a>
-                                <a href="{{ route('eligibility.index') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
-                                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                                    Eligibility
-                                </a>
-                            </div>
-                        </div>
+                        <a href="{{ route('calendar.index') }}" class="px-3 py-2 text-sm font-medium whitespace-nowrap rounded-lg transition-colors {{ $isActive('calendar.*') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-blue-50 hover:text-blue-600' }}">Calendar</a>
+
+                        <a href="{{ route('pdfs.index') }}" class="px-3 py-2 text-sm font-medium whitespace-nowrap rounded-lg transition-colors {{ $isActive('pdfs.*') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-blue-50 hover:text-blue-600' }}">Downloads</a>
+
+                        <a href="{{ route('eligibility.index') }}" class="px-3 py-2 text-sm font-medium whitespace-nowrap rounded-lg transition-colors {{ $isActive('eligibility.*') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-blue-50 hover:text-blue-600' }}">Eligibility</a>
                     </nav>
                 </div>
 
