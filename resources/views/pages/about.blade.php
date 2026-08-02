@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'About UmangIndia - Independent Government Schemes Information Portal')
+@section('title', 'About UmangIndia - Government Schemes Portal')
 
 @section('content')
 <div class="max-w-3xl mx-auto">

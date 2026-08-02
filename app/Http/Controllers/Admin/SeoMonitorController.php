@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\SeoMonitor;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Contracts\Http\Kernel as HttpKernel;
 
 class SeoMonitorController extends Controller
 {
@@ -38,28 +37,37 @@ class SeoMonitorController extends Controller
     public function runCheck()
     {
         $urls = $this->sitemapUrls();
-
-        $client = new Client([
-            'timeout' => 8,
-            'connect_timeout' => 5,
-            'allow_redirects' => true,
-            'headers' => ['User-Agent' => 'UmangIndia-SEO-Monitor/1.0'],
-        ]);
-
-        // Collect all checks, then replace today's rows for these URLs in one go
         $checks = [];
+
+        // Render each page through Laravel's internal router (same process, one
+        // DB connection) — hitting the public URL from the same host exhausts
+        // the shared-hosting connection limit and yields false 500s.
+        $kernel = app(HttpKernel::class);
+
         foreach ($urls as $url) {
             try {
-                $res = $client->get($url);
-                $html = (string) $res->getBody();
-                $checks = array_merge($checks, $this->inspect($url, $html));
-            } catch (GuzzleException $e) {
+                $path = parse_url($url, PHP_URL_PATH) ?: '/';
+                $query = parse_url($url, PHP_URL_QUERY);
+                if ($query) $path .= '?' . $query;
+
+                $req = Request::create($path, 'GET');
+                $resp = $kernel->handle($req);
+                $status = $resp->getStatusCode();
+                $html = $resp->getContent();
+
+                if ($status >= 400) {
+                    $checks[] = $this->row($url, 'broken_link', 'fail', 'Page returned HTTP ' . $status, 'Fix the page or remove from sitemap');
+                } else {
+                    $checks[] = $this->row($url, 'broken_link', 'pass', 'Page loads (HTTP ' . $status . ')', null);
+                    $checks = array_merge($checks, $this->inspect($url, $html));
+                }
+            } catch (\Throwable $e) {
                 $checks[] = [
                     'page_url' => $url,
                     'check_type' => 'broken_link',
                     'status' => 'fail',
-                    'issue_detail' => 'HTTP request failed: ' . $e->getMessage(),
-                    'suggested_fix' => 'Verify the page loads',
+                    'issue_detail' => 'Render failed: ' . substr($e->getMessage(), 0, 200),
+                    'suggested_fix' => 'Verify the page renders',
                     'checked_at' => now(),
                 ];
             }
@@ -159,9 +167,6 @@ class SeoMonitorController extends Controller
         } else {
             $out[] = $this->row($url, 'alt_text', 'pass', 'All images have alt text', null);
         }
-
-        // broken_link: page itself returned 200 (checked by caller)
-        $out[] = $this->row($url, 'broken_link', 'pass', 'Page loads (HTTP 200)', null);
 
         return $out;
     }

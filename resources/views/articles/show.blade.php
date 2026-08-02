@@ -11,7 +11,7 @@
     $next = \App\Models\Article::published()->where('published_at', '>', $article->published_at ?? now())->oldest('published_at')->first();
 @endphp
 
-@section('title', $article->title . ' - UmangIndia')
+@section('title', $article->meta_title ?: ($article->title . ' - UmangIndia'))
 @section('description', Illuminate\Support\Str::limit(strip_tags($article->excerpt ?: $article->content), 160))
 
 @push('meta')
